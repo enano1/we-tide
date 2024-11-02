@@ -7,11 +7,11 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Each user has one profile
 
-    fname = models.CharField(max_length=100)  # First name (required)
-    lname = models.CharField(max_length=100)  # Last name (required)
-    city = models.CharField(max_length=100)   # City (required)
-    email = models.EmailField()               # Email (required)
-    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)  # Profile image file (optional)
+    fname = models.CharField(max_length=100)  
+    lname = models.CharField(max_length=100) 
+    city = models.CharField(max_length=100)  
+    email = models.EmailField()              
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)  
     bio = models.TextField(default="This is where you can add a bio or description about the user.", blank=True)
 
 
@@ -24,16 +24,13 @@ class Profile(models.Model):
     def add_friend(self, other):
         """Add another profile as a friend if no duplicate relationship exists."""
         if self == other:
-            # Prevent self-friending
             return
 
-        # Check if the friend relationship already exists
         existing_friendship = Friend.objects.filter(
             models.Q(profile1=self, profile2=other) | models.Q(profile1=other, profile2=self)
         ).exists()
 
         if not existing_friendship:
-            # If no existing friendship, create one
             Friend.objects.create(profile1=self, profile2=other)
 
     def get_friends(self):
