@@ -47,3 +47,13 @@ class CreateProfileForm(forms.ModelForm):
         if commit:
             profile.save()
         return profile
+    
+# forms.py
+from django import forms
+from .models import Profile
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['city', 'email', 'image', 'bio']
+

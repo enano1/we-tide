@@ -2,21 +2,57 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h2>{{ profile.fname }} {{ profile.lname }}</h2>
-    <div class="profile-grid">
-        <div class="profile-card">
-            <a href="{% url 'show_profile' profile.pk %}">
-                {% if profile.image %}
-                    <img src="{{ profile.image.url }}" class="profile-image" alt="{{ profile.fname }} {{ profile.lname }}">
-                {% else %}
-                    <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
-                {% endif %}
-            </a>
+    <div class="profile-expanded-card">
+        <div class="profile-header">
+            <h2>{{ profile.fname }} {{ profile.lname }}</h2>
+            {% if profile.image %}
+                <img src="{{ profile.image.url }}" class="profile-image-large" alt="{{ profile.fname }} {{ profile.lname }}">
+            {% else %}
+                <img src="https://picsum.photos/400/300" class="profile-image-large" alt="Default Profile Image">
+            {% endif %}
             <div class="profile-info">
-                <div class="profile-name">{{ profile.fname }} {{ profile.lname }}</div>
-                <div class="profile-city">{{ profile.city }}</div>
+                <p><strong>Location:</strong> {{ profile.city }}</p>
+                <p><strong>About:</strong> {{ profile.bio }}</p>
             </div>
+
+        </div>
+
+        <hr>
+        <!-- Friends Section -->
+        <div class="friends-section">
+            <h3>Friends</h3>
+            <div class="friends-container">
+                {% for friend in profile.get_friends %}
+                    <div class="friend-card">
+                        <a href="{% url 'show_profile' friend.pk %}">
+                            {% if friend.image and friend.image.name %}
+                                <img src="{{ friend.image.url }}" class="friend-image" alt="{{ friend.fname }} {{ friend.lname }}">
+                            {% else %}
+                                <img src="https://picsum.photos/60/60" class="friend-image" alt="Default Profile Image">
+                            {% endif %}
+                            <p class="friend-name">{{ friend.fname }} {{ friend.lname }}</p>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>{{ profile.fname }} has no friends yet.</p>
+                {% endfor %}
+            </div>
+            <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
+
+        </div>
+        <hr>
+        <div class="profile-details">
+            {% comment %} <div class="profile-info">
+                <p><strong>Location:</strong> {{ profile.city }}</p>
+                <p><strong>About:</strong> {{ profile.bio }}</p>
+            </div> {% endcomment %}
+
+        
+            <div class="profile-newsfeed">
+                <h3>Feed</h3>
+                <p>This is where updates, posts, or activity for {{ profile.fname }} will appear.</p>
+            </div>
+
         </div>
     </div>
 {% endblock %}
-
