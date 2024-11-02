@@ -37,6 +37,7 @@
                     <p>{{ profile.fname }} has no friends yet.</p>
                 {% endfor %}
             </div>
+    
             <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
 
         </div>
