@@ -1,24 +1,9 @@
-<!-- templates/tide/show_all_profiles.html -->
+<!-- templates/tide/show_profile.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h2>All Profiles</h2>
-
-    {% if not request.user.is_authenticated %}
-        <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
-    {% elif not has_profile %}
-        <a href="{% url 'create_profile' %}" class="btn btn-primary">Create Profile</a>
-    {% endif %}
-
-    {% if request.user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    {% endif %}
-
+    <h2>{{ profile.fname }} {{ profile.lname }}</h2>
     <div class="profile-grid">
-        {% for profile in profiles %}
         <div class="profile-card">
             <a href="{% url 'show_profile' profile.pk %}">
                 {% if profile.image %}
@@ -32,6 +17,6 @@
                 <div class="profile-city">{{ profile.city }}</div>
             </div>
         </div>
-        {% endfor %}
     </div>
 {% endblock %}
+

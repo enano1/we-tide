@@ -1,0 +1,11 @@
+<!-- templates/tide/create_profile.html -->
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h2>Create Profile</h2>
+    <form method="post" enctype="multipart/form-data">  <!-- Enable file uploads -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Profile</button>
+    </form>
+{% endblock %}

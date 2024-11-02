@@ -133,3 +133,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # Path where media files will be 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# settings.py
+# settings.py
+LOGIN_URL = 'login'  # Redirect to the login page if not logged in
+LOGIN_REDIRECT_URL = 'show_all_profiles'  # Redirect here after login
+LOGOUT_REDIRECT_URL = 'show_all_profiles'

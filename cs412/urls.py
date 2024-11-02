@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('dj.urls')),
+    path('', include('tide.urls')),
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) #+ operator concatenates a list
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)                                                        # the static is a list, so we are concating a list with a list
