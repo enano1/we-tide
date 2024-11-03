@@ -51,6 +51,17 @@ class Profile(models.Model):
         all_profiles = Profile.objects.exclude(pk=self.pk)
         suggested_friends = all_profiles.exclude(pk__in=[friend.pk for friend in friends])
         return suggested_friends
+    
+    def get_news_feed(self):
+        """Retrieve status messages for the current profile and their friends."""
+
+        friends = self.get_friends()
+
+        profile_ids = [self.pk] + [friend.pk for friend in friends]
+        
+
+        return StatusMessage.objects.filter(profile__id__in=profile_ids).order_by('-timestamp')
+
 
 
 class Friend(models.Model):
@@ -60,3 +71,24 @@ class Friend(models.Model):
 
     class Meta:
         unique_together = ('profile1', 'profile2')
+
+class StatusMessage(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    message = models.TextField()
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='status_messages')
+
+    def __str__(self):
+        return f"{self.timestamp} - {self.message[:20]}..."
+    
+    def get_images(self):
+        '''Return all images associated with this StatusMessage.'''
+        return self.images.all()  
+    
+class Image(models.Model):
+    '''
+    Encapsulate the idea of an image attached to a StatusMessage.
+    '''
+    image_file = models.ImageField(upload_to='images/') 
+    status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='images')  
+    def __str__(self):
+        return f"Image {self.id} for StatusMessage {self.status_message.id}"

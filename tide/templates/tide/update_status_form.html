@@ -1,0 +1,14 @@
+<!-- templates/tide/update_status_form.html -->
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h2>Update Status Message</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="profile-button">Update Status</button>
+    </form>
+
+    <a href="{% url 'show_profile' status_message.profile.pk %}" class="profile-button">Cancel</a>
+{% endblock %}

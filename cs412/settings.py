@@ -120,7 +120,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 import os 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # This tells Django where to find static files during development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'tide/static')]  # This tells Django where to find static files during development
 
 MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # Path where media files will be stored
@@ -138,5 +138,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # settings.py
 # settings.py
 LOGIN_URL = 'login'  # Redirect to the login page if not logged in
-LOGIN_REDIRECT_URL = 'show_all_profiles'  # Redirect here after login
-LOGOUT_REDIRECT_URL = 'show_all_profiles'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'dashboard'

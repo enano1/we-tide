@@ -4,11 +4,11 @@
 {% block content %}
     <h2>All Profiles</h2>
 
-    {% if not request.user.is_authenticated %}
+    {% comment %} {% if not request.user.is_authenticated %}
         <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
     {% elif not has_profile %}
         <a href="{% url 'create_profile' %}" class="btn btn-primary">Create Profile</a>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% if request.user.is_authenticated %}
         <form action="{% url 'logout' %}" method="post">

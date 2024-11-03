@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, StatusMessage, Image
 
 class CreateProfileForm(forms.ModelForm):
     username = forms.CharField(label="Username", max_length=150, required=True)
@@ -12,7 +12,7 @@ class CreateProfileForm(forms.ModelForm):
     lname = forms.CharField(label="Last Name", max_length=100, required=True)
     city = forms.CharField(label="City", max_length=100, required=True)
     email = forms.EmailField(label="Email", required=True)
-    image = forms.ImageField(label="Profile Image", required=False)  # File upload for profile image
+    image = forms.ImageField(label="Profile Image", required=False)  
 
     class Meta:
         model = Profile
@@ -24,11 +24,9 @@ class CreateProfileForm(forms.ModelForm):
         password = cleaned_data.get("password")
         password_confirmation = cleaned_data.get("password_confirmation")
         
-        # Check if the username already exists
         if User.objects.filter(username=username).exists():
             self.add_error('username', "This username is already taken.")
         
-        # Check if passwords match
         if password and password_confirmation and password != password_confirmation:
             self.add_error('password_confirmation', "Passwords do not match.")
         
@@ -41,19 +39,23 @@ class CreateProfileForm(forms.ModelForm):
             password=self.cleaned_data['password']
         )
         
-        # Create the profile and associate it with the user
         profile = super().save(commit=False)
         profile.user = user
         if commit:
             profile.save()
         return profile
     
-# forms.py
-from django import forms
-from .models import Profile
-
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['city', 'email', 'image', 'bio']
+
+class CreateStatusMessageForm(forms.ModelForm):
+    '''Form to post a new StatusMessage, with an option to upload an image.'''
+    
+    image_file = forms.ImageField(required=False)  # Optional image upload field
+
+    class Meta:
+        model = StatusMessage
+        fields = ['message', 'image_file']  # Include image_file in the form
 

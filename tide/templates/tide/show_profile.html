@@ -1,69 +1,98 @@
-<!-- templates/tide/show_profile.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <div class="profile-expanded-card">
-        <div class="profile-header">
-            <h2>{{ profile.fname }} {{ profile.lname }}</h2>
-            {% if profile.image %}
-                <img src="{{ profile.image.url }}" class="profile-image-large" alt="{{ profile.fname }} {{ profile.lname }}">
-            {% else %}
-                <img src="https://picsum.photos/400/300" class="profile-image-large" alt="Default Profile Image">
-            {% endif %}
-            <div class="profile-info">
-                <p><strong>Location:</strong> {{ profile.city }}</p>
-                <p><strong>About:</strong> {{ profile.bio }}</p>
-            </div>
-
-            <!-- Add/Remove Friend Button (not shown if viewing own profile) -->
-            {% if user.profile != profile %}
-                {% if profile in user.profile.get_friends %}
-                    <form action="{% url 'remove_friend' user.profile.pk profile.pk %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="remove-friend-button">Remove Friend</button>
-                    </form>
-                {% else %}
-                    <form action="{% url 'add_friend' user.profile.pk profile.pk %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="add-friend-button">Add Friend</button>
-                    </form>
-                {% endif %}
-            {% endif %}
+<div class="profile-expanded-card">
+    <div class="profile-header">
+        <h2>{{ profile.fname }} {{ profile.lname }}</h2>
+        {% if profile.image %}
+            <img src="{{ profile.image.url }}" class="profile-image-large" alt="{{ profile.fname }} {{ profile.lname }}">
+        {% else %}
+            <img src="https://picsum.photos/400/300" class="profile-image-large" alt="Default Profile Image">
+        {% endif %}
+        <div class="profile-info">
+            <p><strong>Location:</strong> {{ profile.city }}</p>
+            <p><strong>About:</strong> {{ profile.bio }}</p>
         </div>
+        {% if request.user == profile.user %}
+            <a href="{% url 'update_profile' profile.pk %}" class="edit-profile-button">Edit Profile</a>
+        {% endif %}
 
-        <hr>
+        <!-- Remove Friend Button -->
+        {% if request.user != profile.user and request.user.profile in profile.get_friends %}
+            <form action="{% url 'remove_friend' request.user.profile.pk profile.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="remove-friend-button">Remove Friend</button>
+            </form>
+        {% endif %}
+    </div>
 
-        <!-- Friends Section -->
-        <div class="friends-section">
-            <h3>Friends</h3>
-            <div class="friends-container">
-                {% for friend in profile.get_friends %}
-                    <div class="friend-card">
-                        <a href="{% url 'show_profile' friend.pk %}">
-                            {% if friend.image and friend.image.name %}
-                                <img src="{{ friend.image.url }}" class="friend-image" alt="{{ friend.fname }} {{ friend.lname }}">
-                            {% else %}
-                                <img src="https://picsum.photos/60/60" class="friend-image" alt="Default Profile Image">
-                            {% endif %}
-                            <p class="friend-name">{{ friend.fname }} {{ friend.lname }}</p>
-                        </a>
-                    </div>
-                {% empty %}
-                    <p>{{ profile.fname }} has no friends yet.</p>
-                {% endfor %}
-            </div>
-    
-            <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
+    <hr>
 
+    <!-- Friends Section -->
+    <div class="friends-section">
+        <h3>Friends</h3>
+        <div class="friends-container">
+            {% for friend in profile.get_friends %}
+                <div class="friend-card">
+                    <a href="{% url 'show_profile' friend.pk %}">
+                        {% if friend.image and friend.image.name %}
+                            <img src="{{ friend.image.url }}" class="friend-image" alt="{{ friend.fname }} {{ friend.lname }}">
+                        {% else %}
+                            <img src="https://picsum.photos/60/60" class="friend-image" alt="Default Profile Image">
+                        {% endif %}
+                        <p class="friend-name">{{ friend.fname }} {{ friend.lname }}</p>
+                    </a>
+                </div>
+            {% empty %}
+                <p>{{ profile.fname }} has no friends yet.</p>
+            {% endfor %}
         </div>
+        <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
+    </div>
+
+    <hr>
+
+    <!-- Newsfeed Section -->
+    <div class="profile-newsfeed">
+        <h3>Feed</h3>
+        {% if request.user == profile.user %}
+            <a href="{% url 'news_feed' profile.pk %}" class="profile-button">View News Feed</a>
+        {% endif %}
+
+        <!-- Create Status Message Form -->
+        {% if request.user == profile.user %}
+            <form action="{% url 'create_status_message' profile.pk %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit" class="post-status-button">Post Status</button>
+            </form>
+        {% endif %}
+
+        <!-- Display Status Messages -->
+        <div class="status-messages">
+            {% for status in profile.status_messages.all %}
+                <div class="status-message">
+                    <p><strong>{{ status.timestamp|date:"F j, Y, g:i a" }}</strong></p>
+                    <p>{{ status.message }}</p>
         
-        <hr>
-
-        <div class="profile-details">
-            <div class="profile-newsfeed">
-                <h3>Feed</h3>
-                <p>This is where updates, posts, or activity for {{ profile.fname }} will appear.</p>
-            </div>
+                    <!-- Display associated images using get_images -->
+                    <div class="status-message-images">
+                        {% for img in status.get_images %}
+                            <img src="{{ img.image_file.url }}" alt="Status Image" class="status-image" style="max-width: 300px;">
+                        {% endfor %}
+                    </div>
+        
+                    {% if request.user == profile.user %}
+                        <div class="status-actions">
+                            <a href="{% url 'update_status_message' status.pk %}" class="update-status-button">Edit</a>
+                            <a href="{% url 'delete_status_message' status.pk %}" class="delete-status-button">Delete</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <hr>
+            {% empty %}
+                <p>No status messages yet.</p>
+            {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}
