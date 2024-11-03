@@ -96,3 +96,17 @@ class ShowFriendSuggestionsView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['friend_suggestions'] = self.object.get_friend_suggestions()
         return context
+
+class RemoveFriendView(LoginRequiredMixin, View):
+    def post(self, request, pk, other_pk):
+        """Remove a friend relationship and redirect to profile page with a success message."""
+        profile = get_object_or_404(Profile, pk=pk)
+        other_profile = get_object_or_404(Profile, pk=other_pk)
+
+        # Remove friend relationship
+        profile.remove_friend(other_profile)
+
+        messages.success(request, f'You are no longer friends with {other_profile.fname} {other_profile.lname}.')
+
+        # Redirect to the profile page
+        return redirect('show_profile', pk=profile.pk)

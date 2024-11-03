@@ -33,6 +33,13 @@ class Profile(models.Model):
         if not existing_friendship:
             Friend.objects.create(profile1=self, profile2=other)
 
+    def remove_friend(self, other):
+        """Remove a friend relationship if it exists."""
+        Friend.objects.filter(
+            models.Q(profile1=self, profile2=other) | models.Q(profile1=other, profile2=self)
+        ).delete()
+
+
     def get_friends(self):
         """Retrieve all friends of this profile."""
         friends = Friend.objects.filter(models.Q(profile1=self) | models.Q(profile2=self))

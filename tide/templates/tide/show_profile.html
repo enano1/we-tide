@@ -15,9 +15,24 @@
                 <p><strong>About:</strong> {{ profile.bio }}</p>
             </div>
 
+            <!-- Add/Remove Friend Button (not shown if viewing own profile) -->
+            {% if user.profile != profile %}
+                {% if profile in user.profile.get_friends %}
+                    <form action="{% url 'remove_friend' user.profile.pk profile.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-friend-button">Remove Friend</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'add_friend' user.profile.pk profile.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="add-friend-button">Add Friend</button>
+                    </form>
+                {% endif %}
+            {% endif %}
         </div>
 
         <hr>
+
         <!-- Friends Section -->
         <div class="friends-section">
             <h3>Friends</h3>
@@ -41,19 +56,14 @@
             <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
 
         </div>
-        <hr>
-        <div class="profile-details">
-            {% comment %} <div class="profile-info">
-                <p><strong>Location:</strong> {{ profile.city }}</p>
-                <p><strong>About:</strong> {{ profile.bio }}</p>
-            </div> {% endcomment %}
-
         
+        <hr>
+
+        <div class="profile-details">
             <div class="profile-newsfeed">
                 <h3>Feed</h3>
                 <p>This is where updates, posts, or activity for {{ profile.fname }} will appear.</p>
             </div>
-
         </div>
     </div>
 {% endblock %}
