@@ -9,16 +9,19 @@
         {% if not request.user.is_authenticated %}
             <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
         {% else %}
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            
             <!-- Main Dashboard Content for Authenticated Users -->
             <div class="next-steps">
                 <h3>Next Steps</h3>
-                <ul>
-                    <li><a href="{% url 'show_all_profiles' %}">View All Profiles</a></li>
-                    {% if request.user.profile %}
-                        <li><a href="{% url 'show_profile' request.user.profile.pk %}">View Your Profile</a></li>
-                    {% endif %}
-                    <li><a href="#">Start Next Project Phase</a></li>
-                </ul>
+                <p><a href="{% url 'show_all_profiles' %}">View All Profiles</a></p>
+                {% if request.user.profile %}
+                    <p><a href="{% url 'show_profile' request.user.profile.pk %}">View Your Profile</a></p>
+                {% endif %}
+                <p><a href="#">Start Next Project Phase</a></p>
             </div>
         {% endif %}
     </div>
