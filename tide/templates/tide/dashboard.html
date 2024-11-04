@@ -8,12 +8,18 @@
         <!-- Show login/create account if not authenticated -->
         {% if not request.user.is_authenticated %}
             <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
+        {% else %}
+            <!-- Main Dashboard Content for Authenticated Users -->
+            <div class="next-steps">
+                <h3>Next Steps</h3>
+                <ul>
+                    <li><a href="{% url 'show_all_profiles' %}">View All Profiles</a></li>
+                    {% if request.user.profile %}
+                        <li><a href="{% url 'show_profile' request.user.profile.pk %}">View Your Profile</a></li>
+                    {% endif %}
+                    <li><a href="#">Start Next Project Phase</a></li>
+                </ul>
+            </div>
         {% endif %}
-        
-        <!-- Main Dashboard Content for All Users -->
-                <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
-                <a href="{% url 'show_profile' request.user.profile.pk %}">View Your Profile</a>
-                <a href="#">Start Next Project Phase</a>
-        </div>
     </div>
 {% endblock %}

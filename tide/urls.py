@@ -5,7 +5,6 @@ from . import views
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
-    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('profiles/', views.ShowAllProfilesView.as_view(), name='show_all_profiles'),  # Existing view
     path('profile/<int:pk>/', views.ShowProfilePageView.as_view(), name='show_profile'),
     path('create_profile/', views.CreateProfileView.as_view(), name='create_profile'),
