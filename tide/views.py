@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from .models import Profile, StatusMessage, Image
+from .models import Profile, StatusMessage, Image, SurfSpot
 from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm
 import requests
 from decouple import config
@@ -147,15 +147,17 @@ class ShowNewsFeedView(LoginRequiredMixin, DetailView):
 
 ### DASHBOARD VIEW ###
 
-class DashboardView(View):
+from django.views.generic import TemplateView
+
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'tide/dashboard.html'
+    welcome_message = 'Welcome to your Dashboard!'
 
-    def get(self, request, *args, **kwargs):
-        context = {
-            'welcome_message': "Welcome to your dashboard",
-        }
-        return render(request, self.template_name, context)
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['welcome_message'] = self.welcome_message
+        context['surf_spots'] = SurfSpot.objects.filter(user=self.request.user)
+        return context
 
 from datetime import datetime, timedelta
 import math
@@ -730,3 +732,32 @@ def weather_view(request, lat, lon):
 
 def tide_info_view(request):
     return render(request, 'tide/tide_info.html')
+
+
+class SaveStationView(LoginRequiredMixin, View):
+    def post(self, request):
+        station_id = request.POST.get("station_id")
+        name = request.POST.get("name")
+        latitude = request.POST.get("latitude")
+        longitude = request.POST.get("longitude")
+        nickname = request.POST.get("nickname", "")
+
+        # to check if this station is already saved
+        if SurfSpot.objects.filter(user=request.user, station_id=station_id).exists():
+            messages.info(request, "Station already saved.")
+        else:
+            SurfSpot.objects.create(
+                user=request.user,
+                station_id=station_id,
+                nickname=nickname,
+                latitude=latitude,
+                longitude=longitude,
+            )
+            messages.success(request, "Station saved successfully!")
+
+        return redirect('dashboard')
+
+class SavedLocationsView(LoginRequiredMixin, View):
+    def get(self, request):
+        surf_spots = SurfSpot.objects.filter(user=request.user)
+        return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})

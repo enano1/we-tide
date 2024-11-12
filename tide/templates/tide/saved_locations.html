@@ -1,0 +1,23 @@
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h1>Saved Surf Spots</h1>
+
+    {% if surf_spots %}
+        <div class="saved-locations">
+            {% for spot in surf_spots %}
+                <div class="location-card">
+                    <h3>{{ spot.nickname|default:spot.station_id }}</h3>
+                    <p><strong>Station ID:</strong> {{ spot.station_id }}</p>
+                    <p><strong>Coordinates:</strong> {{ spot.latitude }}, {{ spot.longitude }}</p>
+                    <p><strong>Saved on:</strong> {{ spot.created_at|date:"M d, Y H:i" }}</p>
+                    <a href="{% url 'tide_data' spot.station_id %}">View Tide Data</a> |
+                    <a href="{% url 'weather_view' spot.latitude spot.longitude %}">View Weather</a> |
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ spot.latitude }},{{ spot.longitude }}" target="_blank">Google Maps</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No saved surf spots yet. <a href="{% url 'location_input' %}">Find a station</a> to save one.</p>
+    {% endif %}
+{% endblock %}

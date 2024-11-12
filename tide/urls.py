@@ -34,4 +34,8 @@ urlpatterns = [
     path('nearest-station/<float:latitude>/<float:longitude>/', views.nearest_station_view, name='nearest_station'),
     path('weather/<float:lat>/<float:lon>/', views.weather_view, name='weather_view'),
     path('tide-info/', views.tide_info_view, name='tide_info'),
+    path('save_station/', views.SaveStationView.as_view(), name='save_station'),
+    path('saved-locations/', views.SavedLocationsView.as_view(), name='saved_locations'),
+
+
 ]
