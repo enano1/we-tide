@@ -29,10 +29,13 @@
 
 
 <h3>Recommended Surfing Times:</h3>
-
-<ul id="surfing-times">
-    <li>Loading...</li> <!-- Placeholder until pagination updates -->
-</ul>
+{% if optimal_times %}
+    <ul id="surfing-times">
+        <li>Loading...</li> <!-- Placeholder until pagination updates -->
+    </ul>
+{% else %}
+    <p>No recommended surfing times are available for this date.</p>
+{% endif %}
 
 <div id="pagination-controls">
     <button id="prev-page" disabled>Previous</button>
