@@ -1,18 +1,42 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h1>Weather Forecast</h1>
 
-    <!-- Weather Data Display -->
-    {% if weather_data %}
-        <p><strong>Location:</strong> {{ weather_data.name }}</p>
-        <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°C</p>
-        <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°C</p>
-        <p><strong>Weather:</strong> {{ weather_data.weather.0.description|title }}</p>
-        <p><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
-        <p><strong>Wind:</strong> {{ weather_data.wind.speed }} m/s, {{ weather_data.wind.deg }}°</p>
-    {% else %}
-        <p>Weather data is not available.</p>
+<a href="javascript:history.back()" class="profile-button">Go Back</a>
+
+
+<h1>Weather Forecast</h1>
+
+{% if weather_data %}
+    <p><strong>Location:</strong> {{ weather_data.name }}</p>
+    <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°C</p>
+    <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°C</p>
+    <p><strong>Weather:</strong> {{ weather_data.weather.0.description|title }}</p>
+    <p><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
+    <p><strong>Wind:</strong> {{ weather_data.wind.speed }} m/s, {{ weather_data.wind.deg }}°</p>
+{% else %}
+    <p>Weather data is not available.</p>
+{% endif %}
+
+<h2>Moon Phase</h2>
+{% if moon_phase %}
+    <p><strong>Current Phase:</strong> {{ moon_phase.phase_name }}</p>
+    <p>{{ moon_phase.phase_description }}</p>
+    {% if moon_phase.phase_name == "Waxing" or moon_phase.phase_name == "Waxing" %}
+        <p><em>Waxing phases occur as the moon moves from New Moon to Full Moon. Tidal ranges increase, creating stronger waves. Ideal for intermediate surfers.</em></p>
+    {% elif moon_phase.phase_name == "Waning" or moon_phase.phase_name == "Waning" %}
+        <p><em>Waning phases occur as the moon moves from Full Moon to New Moon. Tidal ranges decrease, offering more stable conditions. Great for a calmer surf.</em></p>
     {% endif %}
+{% else %}
+    <p>Moon phase data is not available.</p>
+{% endif %}
 
+<h2>Guide to Moon Phases and Tides</h2>
+<ul>
+    <li><strong>New Moon:</strong> Spring tides (high highs and low lows). Great for strong waves.</li>
+    <li><strong>Full Moon:</strong> Spring tides (similar to New Moon).</li>
+    <li><strong>First Quarter:</strong> Neap tides (moderate highs and lows). Best for beginners.</li>
+    <li><strong>Last Quarter:</strong> Neap tides (similar to First Quarter).</li>
+</ul>
+<p><em>Tip:</em> Spring tides provide stronger waves, ideal for experienced surfers. Neap tides are more stable, better for beginners.</p>
 {% endblock %}

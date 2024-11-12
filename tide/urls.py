@@ -33,5 +33,5 @@ urlpatterns = [
     path('location-input/', views.location_input_view, name='location_input'),
     path('nearest-station/<float:latitude>/<float:longitude>/', views.nearest_station_view, name='nearest_station'),
     path('weather/<float:lat>/<float:lon>/', views.weather_view, name='weather_view'),
-
+    path('tide-info/', views.tide_info_view, name='tide_info'),
 ]

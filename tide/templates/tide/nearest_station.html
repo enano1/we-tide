@@ -9,4 +9,8 @@
     <a href="{% url 'tide_data' station.id %}">View Tide Data for This Station</a>
     <br>
     <a href="{% url 'weather_view' station.lat station.lng %}">View Weather Forecast for This Location</a>
+    <br>
+    <a href="https://www.google.com/maps/search/?api=1&query={{ station.lat }},{{ station.lng }}" target="_blank">
+        Find Location in Google Maps
+    </a>
 {% endblock %}

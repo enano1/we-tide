@@ -328,6 +328,30 @@ def nearest_station_view(request, latitude, longitude):
     return render(request, 'tide/nearest_station.html', {'station': closest_station})
 
 
+def get_moon_phase(date):
+    # Simplified moon phase calculation
+    diff = (date - datetime(2000, 1, 6)).days
+    lunations = 29.53058867  # Average length of the lunar cycle in days
+    phase_index = (diff % lunations) / lunations
+
+    if phase_index < 0.03 or phase_index > 0.97:
+        phase_name = "New Moon"
+        phase_description = "Spring tides are strongest around this phase, with high highs and low lows."
+    elif 0.22 < phase_index < 0.28:
+        phase_name = "First Quarter"
+        phase_description = "Neap tides occur with moderate tidal ranges."
+    elif 0.47 < phase_index < 0.53:
+        phase_name = "Full Moon"
+        phase_description = "Spring tides occur again, creating stronger tidal effects."
+    elif 0.72 < phase_index < 0.78:
+        phase_name = "Last Quarter"
+        phase_description = "Neap tides occur again with more moderate tidal ranges."
+    else:
+        phase_name = "Waxing or Waning Phase"
+        phase_description = "Tidal ranges are gradually changing."
+    print(phase_index)
+
+    return {'phase_name': phase_name, 'phase_description': phase_description}
 def weather_view(request, lat, lon):
     api_key = config('OPENWEATHER_API_KEY')
     weather_url = "https://api.openweathermap.org/data/2.5/weather"
@@ -346,9 +370,18 @@ def weather_view(request, lat, lon):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
 
+    # Get moon phase information
+    current_date = datetime.utcnow()
+    moon_phase = get_moon_phase(current_date)
+
     return render(request, 'tide/weather.html', {
         'weather_data': weather_data,
         'lat': lat,
         'lon': lon,
-        'api_key': api_key,  
+        'api_key': api_key,
+        'moon_phase': moon_phase  # Pass moon phase data to template
     })
+
+
+def tide_info_view(request):
+    return render(request, 'tide/tide_info.html')

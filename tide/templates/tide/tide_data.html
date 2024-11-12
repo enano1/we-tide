@@ -1,6 +1,7 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
+<a href="javascript:history.back()" class="profile-button">Go Back</a>
 
 <h1>Tide Data for Station {{ station_id }}</h1>
 <h2>Key Insights</h2>
@@ -20,7 +21,15 @@
     <button type="submit">Get Data</button>
 </form>
 
+<h2>Understanding Tides</h2>
+<p><strong>Spring Tides:</strong> Spring tides occur during the full moon and new moon phases. During these times, the sun, moon, and Earth align, causing higher high tides and lower low tides due to the combined gravitational pull.</p>
+
+<p><strong>Neap Tides:</strong> Neap tides happen during the first and third quarter moon phases. The sun and moon are at right angles relative to Earth, reducing the gravitational effect, which results in lower high tides and higher low tides.</p>
+<p>If you want to learn more about how spring tides and neap tides affect surfers, <a href="{% url 'tide_info' %}">click here</a>.</p>
+
+
 <h3>Recommended Surfing Times:</h3>
+
 <ul id="surfing-times">
     <li>Loading...</li> <!-- Placeholder until pagination updates -->
 </ul>
@@ -30,6 +39,9 @@
     <span id="page-info">Page 1 of 1</span>
     <button id="next-page" disabled>Next</button>
 </div>
+
+<p><em>Tip: Tide shifts approximately 50 minutes later each day, so plan your activities accordingly for future days.</em></p>
+
 
 <canvas id="tideChart"></canvas>
 

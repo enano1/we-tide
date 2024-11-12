@@ -1,5 +1,5 @@
-{% extends 'tide/base.html' %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'tide/tidestyles.css' %}">
 {% block content %}
     <h2>{{ welcome_message }}</h2>
     <div class="dashboard-content">
@@ -14,7 +14,7 @@
             </form>
             
             <div class="next-steps">
-                <h3>Next Steps</h3>
+                <h2>Next Steps</h3>
                 <p><a href="{% url 'show_all_profiles' %}">View All Profiles</a></p>
                 <p><a href="{% url 'location_input' %}">Find Nearest NOAA Station</a></p>
             </div>
