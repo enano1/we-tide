@@ -172,7 +172,7 @@ class DashboardView(View):
 #         "product": "water_level",
 #         "datum": "MLLW",
 #         "time_zone": "gmt",
-#         "units": "metric",
+#         "units": "imperial",
 #         "date": "today",
 #         "application": "SurfApp",
 #         "format": "json",
@@ -267,6 +267,7 @@ def tide_data_view(request, station_id):
         'selected_date': input_date,  
     })
 
+
 from django.shortcuts import render, redirect
 from math import radians, sin, cos, sqrt, atan2
 
@@ -359,7 +360,7 @@ def weather_view(request, lat, lon):
         'lat': lat,
         'lon': lon,
         'appid': api_key,
-        'units': 'metric'
+        'units': 'imperial'
     }
 
     weather_data = {}

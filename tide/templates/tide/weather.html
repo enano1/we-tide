@@ -9,8 +9,8 @@
 
 {% if weather_data %}
     <p><strong>Location:</strong> {{ weather_data.name }}</p>
-    <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°C</p>
-    <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°C</p>
+    <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°F</p>
+    <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°F</p>
     <p><strong>Weather:</strong> {{ weather_data.weather.0.description|title }}</p>
     <p><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
     <p><strong>Wind:</strong> {{ weather_data.wind.speed }} m/s, {{ weather_data.wind.deg }}°</p>
