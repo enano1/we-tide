@@ -1,0 +1,21 @@
+<!-- tide/templates/tide/location_input.html -->
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h1>Input Latitude and Longitude</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <p>Need help with decimal coordinates? Check <a href="https://www.geodatos.net/en/coordinates" target="_blank">this form</a>.</p>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" placeholder="e.g., 40.7128" required><br><br>
+
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" placeholder="e.g., -74.0060" required><br><br>
+
+        <button type="submit">Find Nearest Station</button>
+    </form>
+{% endblock %}

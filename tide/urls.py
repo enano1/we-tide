@@ -1,7 +1,18 @@
 # urls.py
-from django.urls import path
+from django.urls import path, register_converter
 from django.contrib.auth import views as auth_views
 from . import views
+
+class FloatConverter:
+    regex = r'-?\d+\.\d+'
+
+    def to_python(self, value):
+        return float(value)
+
+    def to_url(self, value):
+        return str(value)
+
+register_converter(FloatConverter, 'float')
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
@@ -18,6 +29,9 @@ urlpatterns = [
     path('status/<int:pk>/update/', views.UpdateStatusMessageView.as_view(), name='update_status_message'),
     path('status/<int:pk>/delete/', views.DeleteStatusMessageView.as_view(), name='delete_status_message'),
     path('profile/<int:pk>/news_feed/', views.ShowNewsFeedView.as_view(), name='news_feed'),
-
+    path('tide-data/<str:station_id>/', views.tide_data_view, name='tide_data'),
+    path('location-input/', views.location_input_view, name='location_input'),
+    path('nearest-station/<float:latitude>/<float:longitude>/', views.nearest_station_view, name='nearest_station'),
+    path('weather/<float:lat>/<float:lon>/', views.weather_view, name='weather_view'),
 
 ]

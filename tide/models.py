@@ -92,3 +92,17 @@ class Image(models.Model):
     status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='images')  
     def __str__(self):
         return f"Image {self.id} for StatusMessage {self.status_message.id}"
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class SurfSpot(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
+    station_id = models.CharField(max_length=10)
+    nickname = models.CharField(max_length=100, blank=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nickname or self.station_id}"

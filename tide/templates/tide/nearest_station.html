@@ -1,0 +1,12 @@
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h1>Nearest NOAA Station</h1>
+    <p>Closest Station: {{ station.name }}</p>
+    <p>Station ID: {{ station.id }}</p>
+    <p>Location: {{ station.lat }}, {{ station.lng }}</p>
+
+    <a href="{% url 'tide_data' station.id %}">View Tide Data for This Station</a>
+    <br>
+    <a href="{% url 'weather_view' station.lat station.lng %}">View Weather Forecast for This Location</a>
+{% endblock %}

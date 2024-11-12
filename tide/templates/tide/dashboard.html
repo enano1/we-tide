@@ -5,7 +5,6 @@
     <div class="dashboard-content">
         <p>This is your dashboard where you can start working on the next part of your project.</p>
 
-        <!-- Show login/create account if not authenticated -->
         {% if not request.user.is_authenticated %}
             <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
         {% else %}
@@ -14,14 +13,10 @@
                 <button type="submit">Logout</button>
             </form>
             
-            <!-- Main Dashboard Content for Authenticated Users -->
             <div class="next-steps">
                 <h3>Next Steps</h3>
                 <p><a href="{% url 'show_all_profiles' %}">View All Profiles</a></p>
-                {% if request.user.profile %}
-                    <p><a href="{% url 'show_profile' request.user.profile.pk %}">View Your Profile</a></p>
-                {% endif %}
-                <p><a href="#">Start Next Project Phase</a></p>
+                <p><a href="{% url 'location_input' %}">Find Nearest NOAA Station</a></p>
             </div>
         {% endif %}
     </div>

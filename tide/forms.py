@@ -59,3 +59,5 @@ class CreateStatusMessageForm(forms.ModelForm):
         model = StatusMessage
         fields = ['message', 'image_file']  # Include image_file in the form
 
+class LocationForm(forms.Form):
+    station_id = forms.CharField(label="Station ID", max_length=10, required=True)

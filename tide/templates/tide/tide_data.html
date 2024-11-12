@@ -1,0 +1,130 @@
+{% extends 'tide/base.html' %}
+
+{% block content %}
+
+<h1>Tide Data for Station {{ station_id }}</h1>
+<h2>Key Insights</h2>
+<ul>
+    {% if max_tide and min_tide %}
+        <li><strong>Highest Tide:</strong> {{ max_tide.t }} at {{ max_tide.v }} meters</li>
+        <li><strong>Lowest Tide:</strong> {{ min_tide.t }} at {{ min_tide.v }} meters</li>
+    {% else %}
+        <li>No tide data available for this date.</li>
+    {% endif %}
+</ul>
+
+<h2>Check Surfing Times for a Specific Day</h2>
+<form method="GET" action="{% url 'tide_data' station_id %}">
+    <label for="date">Select Date:</label>
+    <input type="date" id="date" name="date" value="{{ selected_date }}" required>
+    <button type="submit">Get Data</button>
+</form>
+
+<h3>Recommended Surfing Times:</h3>
+<ul id="surfing-times">
+    <li>Loading...</li> 
+</ul>
+
+<div id="pagination-controls">
+    <button id="prev-page" disabled>Previous</button>
+    <span id="page-info">Page 1 of 1</span>
+    <button id="next-page" disabled>Next</button>
+</div>
+
+<canvas id="tideChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chart setup
+    const ctx = document.getElementById('tideChart').getContext('2d');
+    const isPredicted = {{ is_predicted|yesno:"true,false" }};
+    const chartData = {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: isPredicted ? 'Predicted Water Level (m)' : 'Actual Water Level (m)',
+            data: {{ chart_values|safe }},
+            borderColor: isPredicted ? 'red' : 'blue',
+            backgroundColor: isPredicted ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)',
+            borderDash: isPredicted ? [5, 5] : [],
+            borderWidth: 2,
+            pointRadius: 2,
+            fill: true,
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Tide Levels for Station {{ station_id }}'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `Time: ${tooltipItem.label}, Level: ${tooltipItem.raw} m`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Time' } },
+                y: { title: { display: true, text: 'Water Level (m)' }, suggestedMin: 0, suggestedMax: 2 }
+            }
+        }
+    };
+
+    if (chartData.labels.length > 0) {
+        new Chart(ctx, config);
+    } else {
+        ctx.font = "20px Arial";
+        ctx.fillText("No data to display", 50, 50);
+    }
+
+    // Pagination setup
+    const optimalTimes = {{ optimal_times|safe }};
+    const itemsPerPage = 10;
+    let currentPage = 1;
+
+    function updatePagination() {
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = optimalTimes.slice(start, end);
+
+        const list = document.getElementById('surfing-times');
+        list.innerHTML = ''; // Clear the list
+
+        pageItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.t} - ${item.v} meters`;
+            list.appendChild(li);
+        });
+
+        const totalPages = Math.ceil(optimalTimes.length / itemsPerPage);
+        document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+
+        document.getElementById('prev-page').disabled = currentPage === 1;
+        document.getElementById('next-page').disabled = currentPage >= totalPages;
+    }
+
+    document.getElementById('prev-page').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePagination();
+        }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+        if (currentPage * itemsPerPage < optimalTimes.length) {
+            currentPage++;
+            updatePagination();
+        }
+    });
+
+    updatePagination();
+</script>
+
+{% endblock %}
