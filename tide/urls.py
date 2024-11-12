@@ -16,7 +16,7 @@ register_converter(FloatConverter, 'float')
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
-    path('profiles/', views.ShowAllProfilesView.as_view(), name='show_all_profiles'),  # Existing view
+    # path('profiles/', views.ShowAllProfilesView.as_view(), name='show_all_profiles'),  # Existing view
     path('profile/<int:pk>/', views.ShowProfilePageView.as_view(), name='show_profile'),
     path('create_profile/', views.CreateProfileView.as_view(), name='create_profile'),
     path('login/', auth_views.LoginView.as_view(template_name='tide/login.html'), name='login'),
@@ -36,6 +36,7 @@ urlpatterns = [
     path('tide-info/', views.tide_info_view, name='tide_info'),
     path('save_station/', views.SaveStationView.as_view(), name='save_station'),
     path('saved-locations/', views.SavedLocationsView.as_view(), name='saved_locations'),
+    path('all_friends/', views.AllFriendsView.as_view(), name='all_friends'),
 
 
 ]

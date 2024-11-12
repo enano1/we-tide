@@ -1,0 +1,46 @@
+{% extends 'tide/base.html' %}
+
+{% block content %}
+    <h2>All Friends</h2>
+
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
+
+    <div class="profile-grid">
+        {% for friend in profile.get_friends %}
+            <div class="profile-card">
+                <a href="{% url 'show_profile' friend.pk %}">
+                    {% if friend.image %}
+                        <img src="{{ friend.image.url }}" class="profile-image" alt="{{ friend.fname }} {{ friend.lname }}">
+                    {% else %}
+                        <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
+                    {% endif %}
+                </a>
+                <div class="profile-info">
+                    <div class="profile-name">{{ friend.fname }} {{ friend.lname }}</div>
+                    <div class="profile-city">{{ friend.city }}</div>
+                </div>
+
+                <div class="status-messages">
+                    <h4>Status Messages</h4>
+                    {% for status in friend.statusmessage_set.all %}
+                        <div class="status-message">
+                            <p>{{ status.message }}</p>
+                            {% if status.image %}
+                                <img src="{{ status.image.url }}" class="status-image" alt="Status Image">
+                            {% endif %}
+                            <small>Posted on {{ status.created_at }}</small>
+                        </div>
+                    {% empty %}
+                        <p>No status messages yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

@@ -9,12 +9,16 @@
             {% for message in news_feed %}
                 <div class="news-feed-item">
                     <div class="news-feed-profile-info">
-                        {% if message.profile.image %}
-                            <img src="{{ message.profile.image.url }}" alt="{{ message.profile.fname }} {{ message.profile.lname }}" class="news-feed-profile-image">
-                        {% else %}
-                            <img src="https://picsum.photos/400/300" alt="Default Profile Image" class="news-feed-profile-image">
-                        {% endif %}
-                        <span class="news-feed-profile-name">{{ message.profile.fname }} {{ message.profile.lname }}</span>
+                        <a href="{% url 'show_profile' message.profile.pk %}">
+                            {% if message.profile.image %}
+                                <img src="{{ message.profile.image.url }}" alt="{{ message.profile.fname }} {{ message.profile.lname }}" class="news-feed-profile-image">
+                            {% else %}
+                                <img src="https://picsum.photos/400/300" alt="Default Profile Image" class="news-feed-profile-image">
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'show_profile' message.profile.pk %}">
+                            <span class="news-feed-profile-name">{{ message.profile.fname }} {{ message.profile.lname }}</span>
+                        </a>
                     </div>
                     <div class="news-feed-status">
                         <p>{{ message.message }}</p>

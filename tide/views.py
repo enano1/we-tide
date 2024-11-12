@@ -21,6 +21,12 @@ class ShowAllProfilesView(LoginRequiredMixin, ListView):
         if self.request.user.is_authenticated:
             context['has_profile'] = Profile.objects.filter(user=self.request.user).exists()
         return context
+
+class AllFriendsView(LoginRequiredMixin, View):
+    def get(self, request):
+        profile = request.user.profile  # Assuming each user has one profile
+        friends = profile.get_friends()  # Replace with the correct method to get friends
+        return render(request, 'tide/all_friends.html', {'profile': profile, 'friends': friends})
     
 class ShowProfilePageView(LoginRequiredMixin, DetailView):
     model = Profile
@@ -699,6 +705,7 @@ def get_moon_phase(date):
     print(phase_index)
 
     return {'phase_name': phase_name, 'phase_description': phase_description}
+
 def weather_view(request, lat, lon):
     api_key = config('OPENWEATHER_API_KEY')
     weather_url = "https://api.openweathermap.org/data/2.5/weather"
@@ -761,3 +768,4 @@ class SavedLocationsView(LoginRequiredMixin, View):
     def get(self, request):
         surf_spots = SurfSpot.objects.filter(user=request.user)
         return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})
+
