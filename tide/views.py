@@ -188,15 +188,12 @@ import math
 
 
 def tide_data_view(request, station_id):
-    # Get the date from user input or default to today
     input_date = request.GET.get('date', datetime.today().strftime('%Y-%m-%d'))
     input_date_obj = datetime.strptime(input_date, '%Y-%m-%d')
 
-    # Calculate days difference between today and input date
     today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
     days_ahead = (input_date_obj - today).days
 
-    # NOAA API for actual data on the chosen date
     formatted_date = input_date_obj.strftime('%Y%m%d')
     url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
     params = {
@@ -219,7 +216,7 @@ def tide_data_view(request, station_id):
         if 'data' in data:
             tide_data = [
                 record for record in data['data']
-                if record['v'] and record['v'].strip()  # Filter out empty values
+                if record['v'] and record['v'].strip() 
             ]
 
             time_shift = timedelta(minutes=50 * days_ahead)
@@ -234,7 +231,6 @@ def tide_data_view(request, station_id):
             label = "Predicted" if days_ahead > 0 else "Actual"
             is_predicted = days_ahead > 0
 
-            # Get valid max/min tide after filtering
             max_tide = max(adjusted_data, key=lambda x: float(x['v']))
             min_tide = min(adjusted_data, key=lambda x: float(x['v']))
             optimal_times = [record for record in adjusted_data if 0.5 <= float(record['v']) <= 1.5]
@@ -268,7 +264,7 @@ def tide_data_view(request, station_id):
         'chart_values': chart_values,
         'label': label,
         'is_predicted': is_predicted,
-        'selected_date': input_date,  # Pass selected date
+        'selected_date': input_date,  
     })
 
 from django.shortcuts import render, redirect
@@ -354,5 +350,5 @@ def weather_view(request, lat, lon):
         'weather_data': weather_data,
         'lat': lat,
         'lon': lon,
-        'api_key': api_key,  # Pass the API key for map
+        'api_key': api_key,  
     })
