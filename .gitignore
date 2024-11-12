@@ -1,0 +1,38 @@
+# Django-specific
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-journal
+
+# Virtual environment
+venv/
+env/
+*.py[cod]
+.Python
+*.sqlite3
+
+# Local development
+.idea/
+.vscode/
+__pycache__/
+*.swp
+.DS_Store
+*.migrations/
+
+# Environment variables
+.env
+
+# Static files
+staticfiles/
+static/
+node_modules/
+
+# Heroku
+*.env.local
+*.env.production
+*.env.test
+
+# System files
+Thumbs.db
