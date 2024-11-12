@@ -55,9 +55,9 @@
     <!-- Newsfeed Section -->
     <div class="profile-newsfeed">
         <h3>Feed</h3>
-        {% if request.user == profile.user %}
+        {% comment %} {% if request.user == profile.user %}
             <a href="{% url 'news_feed' profile.pk %}" class="profile-button">View News Feed</a>
-        {% endif %}
+        {% endif %} {% endcomment %}
 
         <!-- Create Status Message Form -->
         {% if request.user == profile.user %}

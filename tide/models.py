@@ -63,7 +63,6 @@ class Profile(models.Model):
         ).exclude(profile=self).order_by('-timestamp')
 
 
-
 class Friend(models.Model):
     """Model to represent a friendship relationship between two profiles."""
     profile1 = models.ForeignKey(Profile, related_name="profile1_friends", on_delete=models.CASCADE)

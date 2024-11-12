@@ -12,6 +12,7 @@
         <nav>
             <a href="{% url 'dashboard' %}">Dashboard</a>
             <a href="{% url 'show_all_profiles' %}">All Profiles</a>
+            <a href="{% url 'news_feed' request.user.profile.pk %}">News Feed</a>
         </nav>
         
     </header>
