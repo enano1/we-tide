@@ -639,23 +639,6 @@ def haversine(lat1, lon1, lat2, lon2):
 def dashboard_view(request):
     return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
 
-# def location_input_view(request):
-#     if request.method == 'POST':
-#         latitude = request.POST.get('latitude')
-#         longitude = request.POST.get('longitude')
-
-#         try:
-#             latitude = float(latitude)
-#             longitude = float(longitude)
-#         except ValueError:
-#             return render(request, 'tide/location_input.html', {
-#                 'error': 'Please enter valid latitude and longitude as decimals.'
-#             })
-
-#         return redirect('nearest_station', latitude=latitude, longitude=longitude)
-
-#     return render(request, 'tide/location_input.html')
-
 def location_input_view(request):
     if request.method == 'POST':
         address = request.POST.get('address')
@@ -665,8 +648,7 @@ def location_input_view(request):
                 'error': 'Please enter a valid address.'
             })
 
-        # Call Google Geocoding API
-        api_key = config('GOOGLE_API_KEY')  # Replace with your actual API key
+        api_key = config('GOOGLE_API_KEY')  
         geocode_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
         
         response = requests.get(geocode_url)
@@ -693,9 +675,8 @@ def nearest_station_view(request, latitude, longitude):
 
 
 def get_moon_phase(date):
-    # Simplified moon phase calculation
     diff = (date - datetime(2000, 1, 6)).days
-    lunations = 29.53058867  # Average length of the lunar cycle in days
+    lunations = 29.53058867  # the average length of the lunar cycle in days
     phase_index = (diff % lunations) / lunations
 
     if phase_index < 0.03 or phase_index > 0.97:
@@ -743,7 +724,7 @@ def weather_view(request, lat, lon):
         'lat': lat,
         'lon': lon,
         'api_key': api_key,
-        'moon_phase': moon_phase  # Pass moon phase data to template
+        'moon_phase': moon_phase  
     })
 
 

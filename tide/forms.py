@@ -53,11 +53,12 @@ class UpdateProfileForm(forms.ModelForm):
 class CreateStatusMessageForm(forms.ModelForm):
     '''Form to post a new StatusMessage, with an option to upload an image.'''
     
-    image_file = forms.ImageField(required=False)  # Optional image upload field
+    image_file = forms.ImageField(required=False)  
 
     class Meta:
         model = StatusMessage
-        fields = ['message', 'image_file']  # Include image_file in the form
+        fields = ['message', 'image_file'] 
+
 
 class LocationForm(forms.Form):
     station_id = forms.CharField(label="Station ID", max_length=10, required=True)

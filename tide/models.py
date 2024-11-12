@@ -53,14 +53,14 @@ class Profile(models.Model):
         return suggested_friends
     
     def get_news_feed(self):
-        """Retrieve status messages for the current profile and their friends."""
-
-        friends = self.get_friends()
-
-        profile_ids = [self.pk] + [friend.pk for friend in friends]
+        """Retrieve status messages for the current profile's friends and non-friends, excluding the current profile's own posts."""
         
-
-        return StatusMessage.objects.filter(profile__id__in=profile_ids).order_by('-timestamp')
+        friends = self.get_friends()
+        
+        return StatusMessage.objects.filter(
+            models.Q(profile__in=friends) | 
+            models.Q(profile__in=Profile.objects.exclude(pk=self.pk))
+        ).exclude(profile=self).order_by('-timestamp')
 
 
 

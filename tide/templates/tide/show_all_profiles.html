@@ -1,14 +1,7 @@
-<!-- templates/tide/show_all_profiles.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
     <h2>All Profiles</h2>
-
-    {% comment %} {% if not request.user.is_authenticated %}
-        <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
-    {% elif not has_profile %}
-        <a href="{% url 'create_profile' %}" class="btn btn-primary">Create Profile</a>
-    {% endif %} {% endcomment %}
 
     {% if request.user.is_authenticated %}
         <form action="{% url 'logout' %}" method="post">
@@ -30,6 +23,21 @@
             <div class="profile-info">
                 <div class="profile-name">{{ profile.fname }} {{ profile.lname }}</div>
                 <div class="profile-city">{{ profile.city }}</div>
+            </div>
+
+            <div class="status-messages">
+                <h4>Status Messages</h4>
+                {% for status in profile.statusmessage_set.all %}
+                    <div class="status-message">
+                        <p>{{ status.message }}</p>
+                        {% if status.image %}
+                            <img src="{{ status.image.url }}" class="status-image" alt="Status Image">
+                        {% endif %}
+                        <small>Posted on {{ status.created_at }}</small>
+                    </div>
+                {% empty %}
+                    <p>No status messages yet.</p>
+                {% endfor %}
             </div>
         </div>
         {% endfor %}
