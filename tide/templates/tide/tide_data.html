@@ -50,7 +50,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Chart setup
     const ctx = document.getElementById('tideChart').getContext('2d');
     const isPredicted = {{ is_predicted|yesno:"true,false" }};
     const chartData = {
@@ -99,7 +98,6 @@
         ctx.fillText("No data to display", 50, 50);
     }
 
-    // Pagination setup
     const optimalTimes = {{ optimal_times|safe }};
     const itemsPerPage = 10;
     let currentPage = 1;
@@ -139,7 +137,6 @@
         }
     });
 
-    // Initial display
     updatePagination();
 </script>
 

@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+# forms.py
+
 
 ##############################################################################################
 #####################################$# SOCIAL MODELS ########################################
 ##############################################################################################
+
 class Profile(models.Model):
     """
     Model to encapsulate the idea of a Profile associated with a User.
@@ -80,10 +83,37 @@ class Friend(models.Model):
     class Meta:
         unique_together = ('profile1', 'profile2')
 
+class SurfSpot(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
+    station_id = models.CharField(max_length=10)
+    nickname = models.CharField(max_length=100, blank=True)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nickname or self.station_id}"
+    
+    class Meta:
+        ordering = ['-created_at']
+class SurfSession(models.Model):
+    surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE, related_name='surf_sessions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_sessions')
+    date = models.DateField()
+    duration = models.DurationField()  
+    wave_rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    notes = models.TextField(blank=True, max_length=100)
+
+    def __str__(self):
+        return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"
+
+
 class StatusMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='status_messages')
+    surf_session = models.OneToOneField(SurfSession, on_delete=models.SET_NULL, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.timestamp} - {self.message[:20]}..."
@@ -121,33 +151,6 @@ class Image(models.Model):
 #     status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='likes', null=True, blank=True)
 #     image = models.ForeignKey('Image', on_delete=models.CASCADE, related_name='likes', null=True, blank=True)
 
-##############################################################################################
-################################ SURF SPOTS AND SURF SESSIONS ################################
-##############################################################################################
 
-class SurfSpot(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
-    station_id = models.CharField(max_length=10)
-    nickname = models.CharField(max_length=100, blank=True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.nickname or self.station_id}"
-    
-    class Meta:
-        ordering = ['-created_at']
-    
-class SurfSession(models.Model):
-    surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE, related_name='surf_sessions')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_sessions')
-    date = models.DateField()
-    duration = models.DurationField()  
-    wave_rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
-    notes = models.TextField(blank=True, max_length=100)
-
-    def __str__(self):
-        return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"
     
 

@@ -51,13 +51,21 @@ class UpdateProfileForm(forms.ModelForm):
         fields = ['city', 'email', 'image', 'bio']
 
 class CreateStatusMessageForm(forms.ModelForm):
-    '''Form to post a new StatusMessage, with an option to upload an image.'''
-    
-    image_file = forms.ImageField(required=False)  
+    surf_session = forms.ModelChoiceField(
+        queryset=SurfSession.objects.all(),
+        required=False,
+        label="Related Surf Session"
+    )
+    image_file = forms.ImageField(required=False)
 
     class Meta:
         model = StatusMessage
-        fields = ['message', 'image_file'] 
+        fields = ['message', 'surf_session', 'image_file']
+
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  
+        super().__init__(*args, **kwargs)
 
 
 class LocationForm(forms.Form):

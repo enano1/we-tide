@@ -72,8 +72,22 @@
             {% for status in profile.status_messages.all %}
                 <div class="status-message">
                     <p><strong>{{ status.timestamp|date:"F j, Y, g:i a" }}</strong></p>
-                    <p>{{ status.message }}</p>
-        
+                    <p>Session Message: {{ status.message }}</p>
+                    
+                    <!-- Display associated Surf Session details if available -->
+                    {% if status.surf_session %}
+                        <div class="surf-session-details">
+                            <p><strong>Surf Session Nickname:</strong> {{ status.surf_session.surf_spot.nickname }}</p>
+                            <p><strong>Surf Spot:</strong> {{ status.surf_session.surf_spot }}</p>
+                            <p><strong>Date:</strong> {{ status.surf_session.date|date:"F j, Y" }}</p>
+                            <p><strong>Duration:</strong> {{ status.surf_session.duration }}</p>
+                            <p><strong>Wave Rating:</strong> {{ status.surf_session.wave_rating }}/5</p>
+                            {% if status.surf_session.notes %}
+                                <p><strong>Notes:</strong> {{ status.surf_session.notes }}</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    
                     <!-- Display associated images using get_images -->
                     <div class="status-message-images">
                         {% for img in status.get_images %}

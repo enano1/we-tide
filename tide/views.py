@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from .models import Profile, StatusMessage, Image, SurfSpot, SurfSession
 from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm, SurfSessionForm
 import requests
 from decouple import config
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from math import radians, sin, cos, sqrt, atan2
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
@@ -24,8 +24,8 @@ class ShowAllProfilesView(LoginRequiredMixin, ListView):
 
 class AllFriendsView(LoginRequiredMixin, View):
     def get(self, request):
-        profile = request.user.profile  # Assuming each user has one profile
-        friends = profile.get_friends()  # Replace with the correct method to get friends
+        profile = request.user.profile  
+        friends = profile.get_friends()  
         return render(request, 'tide/all_friends.html', {'profile': profile, 'friends': friends})
     
 class ShowProfilePageView(LoginRequiredMixin, DetailView):
@@ -83,6 +83,7 @@ class RemoveFriendView(LoginRequiredMixin, View):
         messages.success(request, f'You are no longer friends with {other_profile.fname} {other_profile.lname}.')
         return redirect('show_profile', pk=profile.pk)
 
+
 class CreateStatusMessageView(LoginRequiredMixin, CreateView):
     form_class = CreateStatusMessageForm
     template_name = 'tide/create_status_form.html'
@@ -91,11 +92,12 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
         return reverse('login')
 
     def form_valid(self, form):
-        sm = form.save(commit=False)
         profile = Profile.objects.get(pk=self.kwargs['pk'])
+        sm = form.save(commit=False)
         sm.profile = profile
         sm.save()
 
+        # Save associated image if provided
         image_file = form.cleaned_data.get('image_file')
         if image_file:
             image = Image(image_file=image_file, status_message=sm)
@@ -109,9 +111,14 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
         context['profile'] = profile
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def get_success_url(self):
         return reverse('show_profile', args=[self.kwargs['pk']])
-
+    
 class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
     model = StatusMessage
     template_name = 'tide/delete_status_form.html'
@@ -153,8 +160,6 @@ class ShowNewsFeedView(LoginRequiredMixin, DetailView):
 
 ### DASHBOARD VIEW ###
 
-from django.views.generic import TemplateView
-
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'tide/dashboard.html'
     welcome_message = 'Welcome to your Dashboard!'
@@ -167,8 +172,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         return context
 
-from datetime import datetime, timedelta
-import math
 
 
 def tide_data_view(request, station_id):
@@ -260,9 +263,6 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return R * c
 
-# def dashboard_view(request):
-#     return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
-
 def location_input_view(request):
     if request.method == 'POST':
         address = request.POST.get('address')
@@ -345,8 +345,7 @@ def weather_view(request, lat, lon):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
 
-    # Get moon phase information
-    current_date = datetime.utcnow()
+    current_date = datetime.now(timezone.utc)
     moon_phase = get_moon_phase(current_date)
 
     return render(request, 'tide/weather.html', {
@@ -408,6 +407,7 @@ class SurfSessionListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return SurfSession.objects.filter(user=self.request.user).order_by('-date')
     
+
 
 class ViewSurfSessionView(LoginRequiredMixin, DetailView):
     model = SurfSession
