@@ -163,6 +163,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['welcome_message'] = self.welcome_message
         context['surf_spots'] = SurfSpot.objects.filter(user=self.request.user)
+        context['recent_surf_sessions'] = SurfSession.objects.filter(user=self.request.user).order_by('-date')[:5]  # Fetch latest 5 sessions
+
         return context
 
 from datetime import datetime, timedelta
@@ -405,6 +407,13 @@ class SurfSessionListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return SurfSession.objects.filter(user=self.request.user).order_by('-date')
+    
+
+class ViewSurfSessionView(LoginRequiredMixin, DetailView):
+    model = SurfSession
+    template_name = 'tide/view_surf_session.html'
+    context_object_name = 'surf_session'
+
 
 class UpdateSurfSessionView(LoginRequiredMixin, UpdateView):
     model = SurfSession

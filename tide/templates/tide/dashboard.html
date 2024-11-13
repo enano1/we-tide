@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'tide/tidestyles.css' %}">
 {% block content %}
     <h2>{{ welcome_message }}</h2>
-    <div class="dashboard-content">
+    <div">
         <p>Welcome to your dashboard! Start working on your next project and explore the available features.</p>
 
         {% if not request.user.is_authenticated %}
@@ -13,9 +13,9 @@
                 <button type="submit" class="btn btn-logout">Logout</button>
             </form>
             
-            <div class="next-steps">
+            <div>
                 <h2>Next Steps</h3>
-                <ul class="next-steps-list">
+                <ul>
                     <li><a href="{% url 'all_friends' %}">View Friends</a></li>
                     <li><a href="{% url 'show_profile' request.user.profile.pk %}">View My Profile</a></li>
                     <li><a href="{% url 'location_input' %}">Find Nearest NOAA Station</a></li>
@@ -25,10 +25,11 @@
         {% endif %}
     </div>
     
-    <div class="recent-activity">
-        <h2>Recent Activity</h3>
+    <div>
+        <h2>Recent Activity</h2>
         {% if recent_surf_sessions %}
-            <ul class="surf-sessions-list">
+            <ul>
+                <a href="{% url 'surf_sessions' %}">View All Surf Sessions</a>
                 {% for session in recent_surf_sessions %}
                     <li>
                         <strong>{{ session.surf_spot.nickname }}</strong> 

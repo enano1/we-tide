@@ -1,0 +1,12 @@
+{% extends 'tide/base.html' %}
+{% block content %}
+<h2>Surf Session Details</h2>
+<p><strong>Spot:</strong> {{ surf_session.surf_spot.nickname }}</p>
+<p><strong>Date:</strong> {{ surf_session.date }}</p>
+<p><strong>Duration:</strong> {{ surf_session.duration }}</p>
+<p><strong>Wave Rating:</strong> {{ surf_session.wave_rating }}</p>
+<p><strong>Notes:</strong> {{ surf_session.notes|default:"No notes provided" }}</p>
+
+<a href="{% url 'dashboard' %}">Back to Dashboard</a>
+{% endblock %}
+

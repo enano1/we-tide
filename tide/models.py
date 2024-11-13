@@ -67,6 +67,9 @@ class Profile(models.Model):
     def get_status_messages(self):
         return StatusMessage.objects.filter(profile=self).order_by('-timestamp')
 
+    def get_surf_sessions(self):
+        return SurfSession.objects.filter(profile=self).order_by('-date')
+    
 class Friend(models.Model):
     """Model to represent a friendship relationship between two profiles."""
     profile1 = models.ForeignKey(Profile, related_name="profile1_friends", on_delete=models.CASCADE)
@@ -120,3 +123,5 @@ class SurfSession(models.Model):
 
     def __str__(self):
         return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"
+    
+
