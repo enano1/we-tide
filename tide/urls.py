@@ -41,7 +41,7 @@ urlpatterns = [
     path('surf_sessions/new/', views.CreateSurfSessionView.as_view(), name='create_surf_session'),
     path('surf_sessions/<int:pk>/update/', views.UpdateSurfSessionView.as_view(), name='update_surf_session'),
     path('surf_sessions/<int:pk>/delete/', views.DeleteSurfSessionView.as_view(), name='delete_surf_session'),
-    path('surf_sessions/<int:pk>/', views.ViewSurfSessionView.as_view(), name='view_surf_session'),  # View details for a session
+    path('surf_sessions/<int:pk>/', views.ViewSurfSessionView.as_view(), name='view_surf_session'),  
 
 
 
