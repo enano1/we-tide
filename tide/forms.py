@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, StatusMessage, Image
+from .models import Profile, StatusMessage, Image, SurfSession
 
 class CreateProfileForm(forms.ModelForm):
     username = forms.CharField(label="Username", max_length=150, required=True)
@@ -62,3 +62,18 @@ class CreateStatusMessageForm(forms.ModelForm):
 
 class LocationForm(forms.Form):
     station_id = forms.CharField(label="Station ID", max_length=10, required=True)
+
+from django import forms
+from .models import SurfSession
+
+class SurfSessionForm(forms.ModelForm):
+    class Meta:
+        model = SurfSession
+        fields = ['surf_spot', 'date', 'duration', 'wave_rating', 'notes']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'duration': forms.TextInput(attrs={'placeholder': 'e.g., 1:30:00 for 1 hour 30 minutes'}),
+            'notes': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Additional notes... max of 100 characters'}),
+        }
+
+    

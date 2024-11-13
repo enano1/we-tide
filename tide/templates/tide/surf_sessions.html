@@ -1,0 +1,38 @@
+{% extends 'tide/base.html' %}
+{% block content %}
+<h2>My Surf Sessions</h2>
+<a href="{% url 'create_surf_session' %}">New Session</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Spot</th>
+            <th>Duration</th>
+            <th>Wave Rating</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if surf_sessions %}
+            {% for session in surf_sessions %}
+            <tr>
+                <td>{{ session.date }}</td>
+                <td>{{ session.surf_spot }}</td>
+                <td>{{ session.duration }}</td>
+                <td>{{ session.wave_rating }}</td>
+                <td>{{ session.notes|default:"No notes" }}</td>
+                <td>
+                    <a href="{% url 'update_surf_session' session.pk %}">Edit</a>
+                    <a href="{% url 'delete_surf_session' session.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">No surf sessions recorded yet.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

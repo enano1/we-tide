@@ -37,6 +37,11 @@ urlpatterns = [
     path('save_station/', views.SaveStationView.as_view(), name='save_station'),
     path('saved-locations/', views.SavedLocationsView.as_view(), name='saved_locations'),
     path('all_friends/', views.AllFriendsView.as_view(), name='all_friends'),
+    path('surf_sessions/', views.SurfSessionListView.as_view(), name='surf_sessions'),
+    path('surf_sessions/new/', views.CreateSurfSessionView.as_view(), name='create_surf_session'),
+    path('surf_sessions/<int:pk>/update/', views.UpdateSurfSessionView.as_view(), name='update_surf_session'),
+    path('surf_sessions/<int:pk>/delete/', views.DeleteSurfSessionView.as_view(), name='delete_surf_session'),
+
 
 
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Profile(models.Model):
     """
     Model to encapsulate the idea of a Profile associated with a User.
@@ -95,9 +96,6 @@ class Image(models.Model):
     def __str__(self):
         return f"Image {self.id} for StatusMessage {self.status_message.id}"
 
-from django.db import models
-from django.contrib.auth.models import User
-
 class SurfSpot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
     station_id = models.CharField(max_length=10)
@@ -108,3 +106,17 @@ class SurfSpot(models.Model):
 
     def __str__(self):
         return f"{self.nickname or self.station_id}"
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+class SurfSession(models.Model):
+    surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE, related_name='surf_sessions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_sessions')
+    date = models.DateField()
+    duration = models.DurationField()  
+    wave_rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    notes = models.TextField(blank=True, max_length=100)
+
+    def __str__(self):
+        return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"

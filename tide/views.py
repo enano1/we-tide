@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from .models import Profile, StatusMessage, Image, SurfSpot
-from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm
+from .models import Profile, StatusMessage, Image, SurfSpot, SurfSession
+from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm, SurfSessionForm
 import requests
 from decouple import config
 from datetime import datetime, timedelta
@@ -248,6 +248,191 @@ def tide_data_view(request, station_id):
         'is_predicted': is_predicted,
         'selected_date': input_date,  
     })
+
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371  # earth's radius in km!
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c
+
+# def dashboard_view(request):
+#     return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
+
+def location_input_view(request):
+    if request.method == 'POST':
+        address = request.POST.get('address')
+
+        if not address:
+            return render(request, 'tide/location_input.html', {
+                'error': 'Please enter a valid address.'
+            })
+
+        api_key = config('GOOGLE_API_KEY')  
+        geocode_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
+        
+        response = requests.get(geocode_url)
+        data = response.json()
+
+        if data['status'] == 'OK':
+            latitude = data['results'][0]['geometry']['location']['lat']
+            longitude = data['results'][0]['geometry']['location']['lng']
+            
+            return redirect('nearest_station', latitude=latitude, longitude=longitude)
+        else:
+            return render(request, 'tide/location_input.html', {
+                'error': 'Unable to find the location. Please try again with a different address.'
+            })
+
+    return render(request, 'tide/location_input.html')
+
+
+def nearest_station_view(request, latitude, longitude):
+    """
+    This view takes a latitude and longitude from the URL and finds the closest
+    NOAA tide station. It renders a template with the station name, id,
+    latitude, longitude, and a link to view the tide data for that station.
+    """
+    latitude = float(latitude)
+    longitude = float(longitude)
+    closest_station = min(NOAA_STATIONS, key=lambda station: haversine(latitude, longitude, station['lat'], station['lng']))
+    return render(request, 'tide/nearest_station.html', {'station': closest_station})
+
+
+def get_moon_phase(date):
+    diff = (date - datetime(2000, 1, 6)).days
+    lunations = 29.53058867  # the average length of the lunar cycle in days
+    phase_index = (diff % lunations) / lunations
+
+    if phase_index < 0.03 or phase_index > 0.97:
+        phase_name = "New Moon"
+        phase_description = "Spring tides are strongest around this phase, with high highs and low lows."
+    elif 0.22 < phase_index < 0.28:
+        phase_name = "First Quarter"
+        phase_description = "Neap tides occur with moderate tidal ranges."
+    elif 0.47 < phase_index < 0.53:
+        phase_name = "Full Moon"
+        phase_description = "Spring tides occur again, creating stronger tidal effects."
+    elif 0.72 < phase_index < 0.78:
+        phase_name = "Last Quarter"
+        phase_description = "Neap tides occur again with more moderate tidal ranges."
+    else:
+        phase_name = "Waxing or Waning Phase"
+        phase_description = "Tidal ranges are gradually changing."
+    print(phase_index)
+
+    return {'phase_name': phase_name, 'phase_description': phase_description}
+
+def weather_view(request, lat, lon):
+    api_key = config('OPENWEATHER_API_KEY')
+    weather_url = "https://api.openweathermap.org/data/2.5/weather"
+    params = {
+        'lat': lat,
+        'lon': lon,
+        'appid': api_key,
+        'units': 'imperial'
+    }
+
+    weather_data = {}
+    try:
+        response = requests.get(weather_url, params=params)
+        response.raise_for_status()
+        weather_data = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching weather data: {e}")
+
+    # Get moon phase information
+    current_date = datetime.utcnow()
+    moon_phase = get_moon_phase(current_date)
+
+    return render(request, 'tide/weather.html', {
+        'weather_data': weather_data,
+        'lat': lat,
+        'lon': lon,
+        'api_key': api_key,
+        'moon_phase': moon_phase  
+    })
+
+
+def tide_info_view(request):
+    return render(request, 'tide/tide_info.html')
+
+
+class SaveStationView(LoginRequiredMixin, View):
+    def post(self, request):
+        station_id = request.POST.get("station_id")
+        name = request.POST.get("name")
+        latitude = request.POST.get("latitude")
+        longitude = request.POST.get("longitude")
+        nickname = request.POST.get("nickname", "")
+
+        # to check if this station is already saved
+        if SurfSpot.objects.filter(user=request.user, station_id=station_id).exists():
+            messages.info(request, "Station already saved.")
+        else:
+            SurfSpot.objects.create(
+                user=request.user,
+                station_id=station_id,
+                nickname=nickname,
+                latitude=latitude,
+                longitude=longitude,
+            )
+            messages.success(request, "Station saved successfully!")
+
+        return redirect('dashboard')
+
+class SavedLocationsView(LoginRequiredMixin, View):
+    def get(self, request):
+        surf_spots = SurfSpot.objects.filter(user=request.user)
+        return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})
+
+class CreateSurfSessionView(LoginRequiredMixin, CreateView):
+    model = SurfSession
+    form_class = SurfSessionForm
+    template_name = 'tide/create_surf_session.html'
+    success_url = reverse_lazy('surf_sessions')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class SurfSessionListView(LoginRequiredMixin, ListView):
+    model = SurfSession
+    template_name = 'tide/surf_sessions.html'
+    context_object_name = 'surf_sessions'
+
+    def get_queryset(self):
+        return SurfSession.objects.filter(user=self.request.user).order_by('-date')
+
+class UpdateSurfSessionView(LoginRequiredMixin, UpdateView):
+    model = SurfSession
+    form_class = SurfSessionForm
+    template_name = 'tide/update_surf_session_form.html'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(SurfSession, pk=self.kwargs['pk'], user=self.request.user)
+
+    def get_success_url(self):
+        return reverse('surf_sessions')
+
+class DeleteSurfSessionView(LoginRequiredMixin, DeleteView):
+    model = SurfSession
+    template_name = 'tide/delete_surf_session_form.html'
+    context_object_name = 'surf_session'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(SurfSession, pk=self.kwargs['pk'], user=self.request.user)
+
+    def get_success_url(self):
+        return reverse('surf_sessions')
+
+
+
+############################################################################
+############################ NOAA STATIONS DATA ############################
+############################################################################
 
 ##parsed this data from noaa xml dataset
 NOAA_STATIONS = [
@@ -631,142 +816,3 @@ NOAA_STATIONS = [
     {'id': '9759413', 'name': 'Aguadilla, Crashboat Beach', 'lat': 18.4566, 'lng': -67.1646},
     {'id': '9759938', 'name': 'Mona Island', 'lat': 18.0893, 'lng': -67.9382}
 ]
-
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371  # earth's radius in km!
-    dlat = radians(lat2 - lat1)
-    dlon = radians(lon2 - lon1)
-    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    return R * c
-
-# def dashboard_view(request):
-#     return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
-
-def location_input_view(request):
-    if request.method == 'POST':
-        address = request.POST.get('address')
-
-        if not address:
-            return render(request, 'tide/location_input.html', {
-                'error': 'Please enter a valid address.'
-            })
-
-        api_key = config('GOOGLE_API_KEY')  
-        geocode_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
-        
-        response = requests.get(geocode_url)
-        data = response.json()
-
-        if data['status'] == 'OK':
-            latitude = data['results'][0]['geometry']['location']['lat']
-            longitude = data['results'][0]['geometry']['location']['lng']
-            
-            return redirect('nearest_station', latitude=latitude, longitude=longitude)
-        else:
-            return render(request, 'tide/location_input.html', {
-                'error': 'Unable to find the location. Please try again with a different address.'
-            })
-
-    return render(request, 'tide/location_input.html')
-
-
-def nearest_station_view(request, latitude, longitude):
-    """
-    This view takes a latitude and longitude from the URL and finds the closest
-    NOAA tide station. It renders a template with the station name, id,
-    latitude, longitude, and a link to view the tide data for that station.
-    """
-    latitude = float(latitude)
-    longitude = float(longitude)
-    closest_station = min(NOAA_STATIONS, key=lambda station: haversine(latitude, longitude, station['lat'], station['lng']))
-    return render(request, 'tide/nearest_station.html', {'station': closest_station})
-
-
-def get_moon_phase(date):
-    diff = (date - datetime(2000, 1, 6)).days
-    lunations = 29.53058867  # the average length of the lunar cycle in days
-    phase_index = (diff % lunations) / lunations
-
-    if phase_index < 0.03 or phase_index > 0.97:
-        phase_name = "New Moon"
-        phase_description = "Spring tides are strongest around this phase, with high highs and low lows."
-    elif 0.22 < phase_index < 0.28:
-        phase_name = "First Quarter"
-        phase_description = "Neap tides occur with moderate tidal ranges."
-    elif 0.47 < phase_index < 0.53:
-        phase_name = "Full Moon"
-        phase_description = "Spring tides occur again, creating stronger tidal effects."
-    elif 0.72 < phase_index < 0.78:
-        phase_name = "Last Quarter"
-        phase_description = "Neap tides occur again with more moderate tidal ranges."
-    else:
-        phase_name = "Waxing or Waning Phase"
-        phase_description = "Tidal ranges are gradually changing."
-    print(phase_index)
-
-    return {'phase_name': phase_name, 'phase_description': phase_description}
-
-def weather_view(request, lat, lon):
-    api_key = config('OPENWEATHER_API_KEY')
-    weather_url = "https://api.openweathermap.org/data/2.5/weather"
-    params = {
-        'lat': lat,
-        'lon': lon,
-        'appid': api_key,
-        'units': 'imperial'
-    }
-
-    weather_data = {}
-    try:
-        response = requests.get(weather_url, params=params)
-        response.raise_for_status()
-        weather_data = response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching weather data: {e}")
-
-    # Get moon phase information
-    current_date = datetime.utcnow()
-    moon_phase = get_moon_phase(current_date)
-
-    return render(request, 'tide/weather.html', {
-        'weather_data': weather_data,
-        'lat': lat,
-        'lon': lon,
-        'api_key': api_key,
-        'moon_phase': moon_phase  
-    })
-
-
-def tide_info_view(request):
-    return render(request, 'tide/tide_info.html')
-
-
-class SaveStationView(LoginRequiredMixin, View):
-    def post(self, request):
-        station_id = request.POST.get("station_id")
-        name = request.POST.get("name")
-        latitude = request.POST.get("latitude")
-        longitude = request.POST.get("longitude")
-        nickname = request.POST.get("nickname", "")
-
-        # to check if this station is already saved
-        if SurfSpot.objects.filter(user=request.user, station_id=station_id).exists():
-            messages.info(request, "Station already saved.")
-        else:
-            SurfSpot.objects.create(
-                user=request.user,
-                station_id=station_id,
-                nickname=nickname,
-                latitude=latitude,
-                longitude=longitude,
-            )
-            messages.success(request, "Station saved successfully!")
-
-        return redirect('dashboard')
-
-class SavedLocationsView(LoginRequiredMixin, View):
-    def get(self, request):
-        surf_spots = SurfSpot.objects.filter(user=request.user)
-        return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})
-
