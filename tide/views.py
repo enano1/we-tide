@@ -9,7 +9,7 @@ from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm
 import requests
 from decouple import config
 from datetime import datetime, timedelta
-import math
+from math import radians, sin, cos, sqrt, atan2
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
     model = Profile
@@ -249,11 +249,7 @@ def tide_data_view(request, station_id):
         'selected_date': input_date,  
     })
 
-
-from django.shortcuts import render, redirect
-from math import radians, sin, cos, sqrt, atan2
-
-# Mock NOAA Stations for Demo
+##parsed this data from noaa xml dataset
 NOAA_STATIONS = [
     {'id': '1611400', 'name': 'Nawiliwili', 'lat': 21.9544, 'lng': -159.3561},
     {'id': '1612340', 'name': 'Honolulu', 'lat': 21.3033, 'lng': -157.8645},
@@ -644,8 +640,8 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return R * c
 
-def dashboard_view(request):
-    return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
+# def dashboard_view(request):
+#     return render(request, 'dashboard.html', {'welcome_message': 'Welcome to your Dashboard!'})
 
 def location_input_view(request):
     if request.method == 'POST':
@@ -676,6 +672,11 @@ def location_input_view(request):
 
 
 def nearest_station_view(request, latitude, longitude):
+    """
+    This view takes a latitude and longitude from the URL and finds the closest
+    NOAA tide station. It renders a template with the station name, id,
+    latitude, longitude, and a link to view the tide data for that station.
+    """
     latitude = float(latitude)
     longitude = float(longitude)
     closest_station = min(NOAA_STATIONS, key=lambda station: haversine(latitude, longitude, station['lat'], station['lng']))

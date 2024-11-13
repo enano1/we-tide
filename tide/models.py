@@ -63,6 +63,9 @@ class Profile(models.Model):
         ).exclude(profile=self).order_by('-timestamp')
 
 
+    def get_status_messages(self):
+        return StatusMessage.objects.filter(profile=self).order_by('-timestamp')
+
 class Friend(models.Model):
     """Model to represent a friendship relationship between two profiles."""
     profile1 = models.ForeignKey(Profile, related_name="profile1_friends", on_delete=models.CASCADE)
@@ -78,7 +81,7 @@ class StatusMessage(models.Model):
 
     def __str__(self):
         return f"{self.timestamp} - {self.message[:20]}..."
-    
+        
     def get_images(self):
         '''Return all images associated with this StatusMessage.'''
         return self.images.all()  

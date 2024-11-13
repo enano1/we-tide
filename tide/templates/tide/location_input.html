@@ -2,8 +2,8 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h1>Input Latitude and Longitude</h1>
-
+    <h1>Input Surf Location</h1>
+    <p><em>Note: This application uses NOAA data, so please ensure the location is within the United States.</em></p>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}

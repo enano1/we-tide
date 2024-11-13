@@ -27,13 +27,13 @@
 
                 <div class="status-messages">
                     <h4>Status Messages</h4>
-                    {% for status in friend.statusmessage_set.all %}
+                    {% for status in friend.get_status_messages %}
                         <div class="status-message">
                             <p>{{ status.message }}</p>
                             {% if status.image %}
                                 <img src="{{ status.image.url }}" class="status-image" alt="Status Image">
                             {% endif %}
-                            <small>Posted on {{ status.created_at }}</small>
+                            <small>Posted on {{ status.timestamp }}</small>
                         </div>
                     {% empty %}
                         <p>No status messages yet.</p>
