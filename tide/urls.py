@@ -42,6 +42,9 @@ urlpatterns = [
     path('surf_sessions/<int:pk>/update/', views.UpdateSurfSessionView.as_view(), name='update_surf_session'),
     path('surf_sessions/<int:pk>/delete/', views.DeleteSurfSessionView.as_view(), name='delete_surf_session'),
     path('surf_sessions/<int:pk>/', views.ViewSurfSessionView.as_view(), name='view_surf_session'),  
+    path('comment/status/<int:status_message_id>/', views.CreateCommentView.as_view(), name='create_comment'),
+    path('comment/reply/<int:parent_comment_id>/', views.CreateCommentView.as_view(), name='reply_to_comment'),
+    path('comment/delete/<int:pk>/', views.DeleteCommentView.as_view(), name='delete_comment'),
 
 
 

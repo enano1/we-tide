@@ -91,15 +91,42 @@
                         {% endfor %}
                     </div>
         
-                    <p><em>{{ status.timestamp|date:"F j, Y, g:i a" }}</em></p>
-
+                    <p><em>{{ status.timestamp|date:"F j, Y, g:i a" }}</em></p> 
                     {% if request.user == profile.user %}
-                        <div class="status-actions">
-                            <a href="{% url 'update_status_message' status.pk %}" class="update-status-button">Edit</a>
-                            <a href="{% url 'delete_status_message' status.pk %}" class="delete-status-button">Delete</a>
-                        </div>
+                    <div class="status-actions">
+                        <a href="{% url 'update_status_message' status.pk %}" class="update-status-button">Edit</a>
+                        <a href="{% url 'delete_status_message' status.pk %}" class="delete-status-button">Delete</a>
+                    </div>
                     {% endif %}
+
+
+                    <form method="post" action="{% url 'create_comment' status_message_id=status.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Comment</button>
+                    </form>
+                            
                     
+                    <div class="comments">
+                        {% for comment in status.comments.all %}
+                            {% if comment.parent_comment is None %}
+                                <div class="comment">
+                                    <p><strong><a href="{% url 'show_profile' comment.profile.pk %}">{{ comment.profile.user.username }}</a>:</strong> {{ comment.comment_text }}</p>
+                                    <a href="{% url 'reply_to_comment' parent_comment_id=comment.id %}">Reply</a>
+                                    <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+                                    
+                                    <div class="replies">
+                                        {% for reply in comment.replies.all %}
+                                            <div class="reply">
+                                                <p style="margin-left: 40px;"><strong><a href="{% url 'show_profile' reply.profile.pk %}">{{ reply.profile.user.username }}</a>:</strong> {{ reply.comment_text }}</p>
+                                                <a style="margin-left: 40px;" href="{% url 'delete_comment' reply.id %}">Delete</a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                            
                 </div>
                 <hr>
             {% empty %}

@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, StatusMessage, Image, SurfSession
+from .models import Profile, StatusMessage, Image, SurfSession, Comment
 
 class CreateProfileForm(forms.ModelForm):
     username = forms.CharField(label="Username", max_length=150, required=True)
@@ -84,3 +84,10 @@ class SurfSessionForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Additional notes... max of 100 characters'}),
         }
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment_text']
+        widgets = {
+            'comment_text': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Write a comment...'}),
+        }

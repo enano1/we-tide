@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 # forms.py
 
 
@@ -130,6 +131,10 @@ class StatusMessage(models.Model):
         '''Return all images associated with this StatusMessage.'''
         return self.images.all()  
     
+    def get_absolute_url(self):
+        return reverse('show_profile', kwargs={'pk': self.profile.pk})
+
+    
 class Image(models.Model):
     '''
     Encapsulate the idea of an image attached to a StatusMessage.
@@ -144,9 +149,9 @@ class Comment(models.Model):
     A comment on a status message or post
     '''
     status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='comments')
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, related_name='replies', null=True, blank=True)
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='comments')
     comment_text = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Comment {self.id} on StatusMessage {self.status_message.id}"

@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from .models import Profile, StatusMessage, Image, SurfSpot, SurfSession
-from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm, SurfSessionForm
+from .models import Profile, StatusMessage, Image, SurfSpot, SurfSession, Comment
+from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm, SurfSessionForm, CommentForm
 import requests
 from decouple import config
 from datetime import datetime, timedelta
@@ -442,6 +442,35 @@ class DeleteSurfSessionView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('surf_sessions')
+    
+class CreateCommentView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'tide/create_comment.html'
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+
+        if 'status_message_id' in self.kwargs:
+            comment.status_message = get_object_or_404(StatusMessage, pk=self.kwargs['status_message_id'])
+        elif 'parent_comment_id' in self.kwargs:
+            parent_comment = get_object_or_404(Comment, pk=self.kwargs['parent_comment_id'])
+            comment.parent_comment = parent_comment
+            comment.status_message = parent_comment.status_message
+        
+        comment.profile = self.request.user.profile
+        comment.save()
+
+        return redirect('show_profile', pk=comment.status_message.profile.id)
+
+class DeleteCommentView(DeleteView):
+    model = Comment
+    template_name = 'tide/confirm_delete.html'  
+
+    def get_success_url(self):
+        return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
+
+
 
 
 
