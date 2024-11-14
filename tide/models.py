@@ -114,7 +114,7 @@ class SurfSession(models.Model):
         return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"
     
     def get_absolute_url(self):
-        return reverse('surf_sessions')  # Redirect to your surf sessions list
+        return reverse('surf_sessions') 
 
 
 ##############################################################################################

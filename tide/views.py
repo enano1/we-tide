@@ -511,6 +511,8 @@ class SurfSessionPublicListView(ListView):
         context['surf_spots'] = SurfSpot.objects.all()
         return context
 
+def HomeView(request):
+    return render(request, 'tide/home.html')
 
 ############################################################################
 ############################ NOAA STATIONS DATA ############################
