@@ -67,14 +67,11 @@
             </form>
         {% endif %}
 
-        <!-- Display Status Messages -->
         <div class="status-messages">
             {% for status in profile.status_messages.all %}
                 <div class="status-message">
-                    <p><strong>{{ status.timestamp|date:"F j, Y, g:i a" }}</strong></p>
-                    <p>Session Message: {{ status.message }}</p>
+                    <p><strong>Status Message: {{ status.message }}</strong></p>
                     
-                    <!-- Display associated Surf Session details if available -->
                     {% if status.surf_session %}
                         <div class="surf-session-details">
                             <p><strong>Surf Session Nickname:</strong> {{ status.surf_session.surf_spot.nickname }}</p>
@@ -88,19 +85,21 @@
                         </div>
                     {% endif %}
                     
-                    <!-- Display associated images using get_images -->
                     <div class="status-message-images">
                         {% for img in status.get_images %}
                             <img src="{{ img.image_file.url }}" alt="Status Image" class="status-image" style="max-width: 300px;">
                         {% endfor %}
                     </div>
         
+                    <p><strong>{{ status.timestamp|date:"F j, Y, g:i a" }}</strong></p>
+
                     {% if request.user == profile.user %}
                         <div class="status-actions">
                             <a href="{% url 'update_status_message' status.pk %}" class="update-status-button">Edit</a>
                             <a href="{% url 'delete_status_message' status.pk %}" class="delete-status-button">Delete</a>
                         </div>
                     {% endif %}
+                    
                 </div>
                 <hr>
             {% empty %}

@@ -10,6 +10,8 @@ import requests
 from decouple import config
 from datetime import datetime, timedelta, timezone
 from math import radians, sin, cos, sqrt, atan2
+from django.utils.timezone import make_aware, now, is_naive
+
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
     model = Profile
@@ -304,7 +306,11 @@ def nearest_station_view(request, latitude, longitude):
 
 
 def get_moon_phase(date):
-    diff = (date - datetime(2000, 1, 6)).days
+    if is_naive(date):  # Correct method from django.utils.timezone
+        date = make_aware(date)
+
+    base_date = make_aware(datetime(2000, 1, 6))
+    diff = (date - base_date).days
     lunations = 29.53058867  # the average length of the lunar cycle in days
     phase_index = (diff % lunations) / lunations
 
@@ -345,7 +351,7 @@ def weather_view(request, lat, lon):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
 
-    current_date = datetime.now(timezone.utc)
+    current_date = now()  
     moon_phase = get_moon_phase(current_date)
 
     return render(request, 'tide/weather.html', {
