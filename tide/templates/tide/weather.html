@@ -4,7 +4,7 @@
 
 <a href="javascript:history.back()" class="profile-button">Go Back</a>
 
-
+<div class="weather_section">
 <h1>Weather Forecast</h1>
 
 {% if weather_data %}
@@ -17,7 +17,9 @@
 {% else %}
     <p>Weather data is not available.</p>
 {% endif %}
+</div>
 
+<div class="weather_section">
 <h2>Moon Phase</h2>
 {% if moon_phase %}
     <p><strong>Current Phase:</strong> {{ moon_phase.phase_name }}</p>
@@ -39,4 +41,38 @@
     <li><strong>Last Quarter:</strong> Neap tides (similar to First Quarter).</li>
 </ul>
 <p><em>Tip:</em> Spring tides provide stronger waves, ideal for experienced surfers. Neap tides are more stable, better for beginners.</p>
+</div>
+<h1>How Wind, Ocean Depth, and Geological Features Influence Wave Formation</h1>
+
+<div class="weather_section">
+    <h2>Wind</h2>
+    <p>Wind is the primary driver of wave formation. When wind blows across the surface of the ocean, it transfers energy to the water, generating waves. The following factors influence the size and strength of waves:</p>
+    <ul>
+        <li><strong>Wind Speed:</strong> Faster winds exert more force on the water surface, creating larger waves.</li>
+        <li><strong>Duration:</strong> The longer the wind blows over a given area, the more energy is transferred, resulting in bigger waves.</li>
+        <li><strong>Fetch:</strong> This refers to the distance over which the wind blows uninterrupted across the water surface. A longer fetch allows for the development of larger waves.</li>
+    </ul>
+
+
+    <h2>Ocean Depth</h2>
+    <p>Ocean depth significantly affects wave behavior as waves approach the shore:</p>
+    <ul>
+        <li><strong>Deep Water Waves:</strong> In deeper water, waves maintain their energy and travel faster. The motion of water particles in these waves is circular.</li>
+        <li><strong>Shallow Water Waves:</strong> As waves enter shallower waters, their speed decreases due to friction with the ocean floor. This causes the wave height to increase, and the circular motion of water particles becomes more elliptical, leading to wave breaking.</li>
+    </ul>
+
+    <h2>Geological Features</h2>
+    <p>Geological features on the seafloor and coastline influence wave formation and behavior:</p>
+    <ul>
+        <li><strong>Seafloor Topography:</strong> Underwater features such as reefs, sandbars, and continental shelves can cause waves to break or change direction.</li>
+        <li><strong>Coastal Shape:</strong> Bays, headlands, and cliffs affect how waves interact with the shoreline. For example:
+            <ul>
+                <li><strong>Headlands:</strong> Concentrate wave energy, leading to stronger and larger waves.</li>
+                <li><strong>Bays:</strong> Disperse wave energy, resulting in calmer waters.</li>
+            </ul>
+        </li>
+        <li><strong>Tectonic Activity:</strong> Geological events like earthquakes can generate large waves, known as tsunamis, which are unrelated to wind.</li>
+    </ul>
+</div>
+
 {% endblock %}
