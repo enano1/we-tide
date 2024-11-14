@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, StatusMessage, Image, SurfSession, Comment
+from .models import Profile, StatusMessage, Image, SurfSession, Comment, SurfSpot
 
 class CreateProfileForm(forms.ModelForm):
     username = forms.CharField(label="Username", max_length=150, required=True)
@@ -83,6 +83,12 @@ class SurfSessionForm(forms.ModelForm):
             'duration': forms.TextInput(attrs={'placeholder': 'e.g., 1:30:00 for 1 hour 30 minutes'}),
             'notes': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Additional notes... max of 100 characters'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['surf_spot'].queryset = SurfSpot.objects.filter(user=user)  
 
 class CommentForm(forms.ModelForm):
     class Meta:

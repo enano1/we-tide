@@ -396,11 +396,15 @@ class SavedLocationsView(LoginRequiredMixin, View):
         surf_spots = SurfSpot.objects.filter(user=request.user)
         return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})
 
-class CreateSurfSessionView(LoginRequiredMixin, CreateView):
+class CreateSurfSessionView(CreateView):
     model = SurfSession
     form_class = SurfSessionForm
     template_name = 'tide/create_surf_session.html'
-    success_url = reverse_lazy('surf_sessions')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         form.instance.user = self.request.user
