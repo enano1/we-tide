@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 ##############################################################################################
-#####################################$# SOCIAL MODELS ########################################
+######################################## USER MODELS #########################################
 ##############################################################################################
 
 class Profile(models.Model):
@@ -83,6 +83,11 @@ class Friend(models.Model):
     class Meta:
         unique_together = ('profile1', 'profile2')
 
+##############################################################################################
+######################################## SURF MODELS #########################################
+##############################################################################################
+
+
 class SurfSpot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
     station_id = models.CharField(max_length=10)
@@ -107,6 +112,9 @@ class SurfSession(models.Model):
     def __str__(self):
         return f"Session at {self.surf_spot} on {self.date}, Rating: {self.wave_rating}"
 
+##############################################################################################
+#####################################$# SOCIAL MODELS ########################################
+##############################################################################################
 
 class StatusMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)

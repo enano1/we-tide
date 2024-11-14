@@ -1,0 +1,12 @@
+- Implement more scientific information
+- Implement comments and likes
+- Implement comments and likes on profiles, and newsfeed
+
+- Explain how to identify and escape rip currents, with live data on current risk levels.
+- Explain how wind, ocean depth, and geological features influence wave formation. 
+- Provide warnings for hazardous conditions such as high swells, storms, or tsunami risks, with actionable advice.
+
+- Implement CSS once everything is done
+
+- Implement searching or filtering data in some capacity, to produce some kind of meaningful report based on your data
+    - Surf Sessions: Filter by date range, surf spot, or wave rating.

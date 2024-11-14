@@ -91,7 +91,7 @@
                         {% endfor %}
                     </div>
         
-                    <p><strong>{{ status.timestamp|date:"F j, Y, g:i a" }}</strong></p>
+                    <p><em>{{ status.timestamp|date:"F j, Y, g:i a" }}</em></p>
 
                     {% if request.user == profile.user %}
                         <div class="status-actions">

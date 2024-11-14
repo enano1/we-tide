@@ -306,7 +306,7 @@ def nearest_station_view(request, latitude, longitude):
 
 
 def get_moon_phase(date):
-    if is_naive(date):  # Correct method from django.utils.timezone
+    if is_naive(date):  
         date = make_aware(date)
 
     base_date = make_aware(datetime(2000, 1, 6))
