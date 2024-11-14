@@ -1,0 +1,17 @@
+<!-- tide/templates/tide/comment.html -->
+<!--
+    This template is used to display comments and its replies.
+-->
+<div class="comment" style="margin-left: {{ level|add:"20" }}px;">
+    <p><strong><a href="{% url 'show_profile' comment.profile.pk %}">{{ comment.profile.user.username }}</a>:</strong> {{ comment.comment_text }}</p>
+    <a href="{% url 'reply_to_comment' parent_comment_id=comment.id %}">Reply</a>
+    {% if request.user == comment.profile.user %}
+        <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+    {% endif %}
+
+    <div class="replies">
+        {% for reply in comment.replies.all %}
+            {% include 'tide/comment.html' with comment=reply level=level|add:"20" %}
+        {% endfor %}
+    </div>
+</div>

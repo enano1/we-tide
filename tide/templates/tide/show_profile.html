@@ -112,13 +112,18 @@
                                 <div class="comment">
                                     <p><strong><a href="{% url 'show_profile' comment.profile.pk %}">{{ comment.profile.user.username }}</a>:</strong> {{ comment.comment_text }}</p>
                                     <a href="{% url 'reply_to_comment' parent_comment_id=comment.id %}">Reply</a>
-                                    <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+
+                                    {% if request.user == comment.profile.user %}
+                                        <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+                                    {% endif %}
                                     
                                     <div class="replies">
                                         {% for reply in comment.replies.all %}
                                             <div class="reply">
                                                 <p style="margin-left: 40px;"><strong><a href="{% url 'show_profile' reply.profile.pk %}">{{ reply.profile.user.username }}</a>:</strong> {{ reply.comment_text }}</p>
-                                                <a style="margin-left: 40px;" href="{% url 'delete_comment' reply.id %}">Delete</a>
+                                                {% if request.user == reply.profile.user %}
+                                                    <a style="margin-left: 40px;" href="{% url 'delete_comment' reply.id %}">Delete</a>
+                                                {% endif %}
                                             </div>
                                         {% endfor %}
                                     </div>

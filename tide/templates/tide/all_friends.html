@@ -27,17 +27,15 @@
 
                 <div class="status-messages">
                     <h4>Status Messages</h4>
-                    {% for status in friend.get_status_messages %}
+                    {% with friend.get_status_messages|slice:":1" as latest_status %}
                         <div class="status-message">
-                            <p>{{ status.message }}</p>
-                            {% if status.image %}
-                                <img src="{{ status.image.url }}" class="status-image" alt="Status Image">
+                            <p>{{ latest_status.0.message }}</p>
+                            {% if latest_status.0.image %}
+                                <img src="{{ latest_status.0.image.url }}" class="status-image" alt="Status Image">
                             {% endif %}
-                            <small>Posted on {{ status.timestamp }}</small>
+                            <small>Posted on {{ latest_status.0.timestamp }}</small>
                         </div>
-                    {% empty %}
-                        <p>No status messages yet.</p>
-                    {% endfor %}
+                    {% endwith %}
                 </div>
             </div>
         {% endfor %}

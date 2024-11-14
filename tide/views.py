@@ -461,17 +461,21 @@ class CreateCommentView(CreateView):
         comment.profile = self.request.user.profile
         comment.save()
 
-        return redirect('show_profile', pk=comment.status_message.profile.id)
+        if 'news_feed' in self.request.POST:
+            return redirect('news_feed', pk=comment.status_message.profile.id)
+        else:
+            return redirect('show_profile', pk=comment.status_message.profile.id)
+
 
 class DeleteCommentView(DeleteView):
     model = Comment
     template_name = 'tide/confirm_delete.html'  
 
     def get_success_url(self):
-        return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
-
-
-
+        if 'news_feed' in self.request.POST:
+            return reverse_lazy('news_feed', kwargs={'pk': self.object.status_message.profile.id})
+        else:
+            return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
 
 
 ############################################################################

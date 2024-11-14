@@ -21,7 +21,7 @@
                         </a>
                     </div>
 
-                    <!-- FOR LATER MAKE A SURF SESSION CONTAINER -->
+                    <!-- Surf Session Details -->
                     {% if message.surf_session %}
                         <div class="surf-session-details">
                             <p><strong>Surf Session Nickname:</strong> {{ message.surf_session.surf_spot.nickname }}</p>
@@ -33,14 +33,15 @@
                                 <p><strong>Notes:</strong> {{ message.surf_session.notes }}</p>
                             {% endif %}
                         </div>
-
                     {% endif %}
-                    
-                <div class="news-feed-status">
-                    <p>{{ message.message }}</p>
-                    <span class="news-feed-timestamp">{{ message.timestamp|date:"F j, Y, g:i a" }}</span>
-                </div>
 
+                    <!-- Status Message -->
+                    <div class="news-feed-status">
+                        <p>{{ message.message }}</p>
+                        <span class="news-feed-timestamp">{{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+                    </div>
+
+                    <!-- Images -->
                     {% if message.get_images.all %}
                         <div class="news-feed-images">
                             {% for img in message.get_images %}
@@ -48,6 +49,19 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+
+                    <!-- Comments Section -->
+                    <div class="comments">
+                        {% for comment in message.comments.all %}
+                            {% include 'tide/comment.html' with comment=comment level=0 %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form method="post" action="{% url 'create_comment' status_message_id=message.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Add Comment</button>
+                    </form>
                 </div>
             {% endfor %}
         {% else %}

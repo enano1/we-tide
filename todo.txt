@@ -10,3 +10,6 @@
 
 - Implement searching or filtering data in some capacity, to produce some kind of meaningful report based on your data
     - Surf Sessions: Filter by date range, surf spot, or wave rating.
+
+- After completing this, and testing the functionality, start working on the front end design
+
