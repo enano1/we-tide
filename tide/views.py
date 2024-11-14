@@ -478,6 +478,34 @@ class DeleteCommentView(DeleteView):
         else:
             return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
 
+class SurfSessionPublicListView(ListView):
+    model = SurfSession
+    template_name = 'tide/surf_sessions_public.html'
+    context_object_name = 'surf_sessions'
+
+    def get_queryset(self):
+        queryset = SurfSession.objects.all().order_by('-date')
+
+        date_from = self.request.GET.get('date_from')
+        date_to = self.request.GET.get('date_to')
+        surf_spot = self.request.GET.get('surf_spot')
+        wave_rating = self.request.GET.get('wave_rating')
+
+        if date_from:
+            queryset = queryset.filter(date__gte=date_from)
+        if date_to:
+            queryset = queryset.filter(date__lte=date_to)
+        if surf_spot:
+            queryset = queryset.filter(surf_spot__id=surf_spot)
+        if wave_rating:
+            queryset = queryset.filter(wave_rating=wave_rating)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['surf_spots'] = SurfSpot.objects.all()
+        return context
 
 
 ############################################################################

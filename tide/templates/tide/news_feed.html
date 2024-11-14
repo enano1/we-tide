@@ -57,7 +57,6 @@
                         {% endfor %}
                     </div>
 
-                    <!-- Add Comment Form -->
                     <form method="post" action="{% url 'create_comment' status_message_id=message.id %}">
                         {% csrf_token %}
                         <button type="submit">Add Comment</button>

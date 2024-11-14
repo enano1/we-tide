@@ -20,6 +20,7 @@
                     <li><a href="{% url 'show_profile' request.user.profile.pk %}">View My Profile</a></li>
                     <li><a href="{% url 'location_input' %}">Find Nearest NOAA Station</a></li>
                     <li><a href="{% url 'saved_locations' %}">View Saved Surf Spots</a></li>
+                    <li><a href="{% url 'surf_sessions_public' %}">View Public Surf Sessions</a></li>
                 </ul>
             </div>
         {% endif %}

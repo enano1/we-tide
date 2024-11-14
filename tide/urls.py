@@ -45,7 +45,5 @@ urlpatterns = [
     path('comment/status/<int:status_message_id>/', views.CreateCommentView.as_view(), name='create_comment'),
     path('comment/reply/<int:parent_comment_id>/', views.CreateCommentView.as_view(), name='reply_to_comment'),
     path('comment/delete/<int:pk>/', views.DeleteCommentView.as_view(), name='delete_comment'),
-
-
-
+    path('surf_sessions_public/', views.SurfSessionPublicListView.as_view(), name='surf_sessions_public'),
 ]
