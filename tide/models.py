@@ -139,17 +139,18 @@ class Image(models.Model):
     def __str__(self):
         return f"Image {self.id} for StatusMessage {self.status_message.id}"
     
-# class Comment(models.Model): 
-#     '''
-#     A comment on a status message or post
-#     '''
-#     status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='comments')
-#     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='comments')
-#     comment_text = models.TextField()
-#     timestamp = models.DateTimeField(auto_now_add=True)
+class Comment(models.Model): 
+    '''
+    A comment on a status message or post
+    '''
+    status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='comments')
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='comments')
+    comment_text = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
-#     def __str__(self):
-#         return f"Comment {self.id} on StatusMessage {self.status_message.id}"
+    def __str__(self):
+        return f"Comment {self.id} on StatusMessage {self.status_message.id}"
+
 
 # class Like(models.Model):
 #     '''

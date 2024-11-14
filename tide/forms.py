@@ -17,6 +17,9 @@ class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['username', 'password', 'password_confirmation', 'fname', 'lname', 'city', 'email', 'image']
+        widgets = {
+            'city': forms.TextInput(attrs={'placeholder': 'e.g., New York, NY, USA'}),
+        }
         
     def clean(self):
         cleaned_data = super().clean()
@@ -71,9 +74,6 @@ class CreateStatusMessageForm(forms.ModelForm):
 class LocationForm(forms.Form):
     station_id = forms.CharField(label="Station ID", max_length=10, required=True)
 
-from django import forms
-from .models import SurfSession
-
 class SurfSessionForm(forms.ModelForm):
     class Meta:
         model = SurfSession
@@ -84,4 +84,3 @@ class SurfSessionForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Additional notes... max of 100 characters'}),
         }
 
-    

@@ -8,7 +8,7 @@ from .models import Profile, StatusMessage, Image, SurfSpot, SurfSession
 from .forms import CreateProfileForm, UpdateProfileForm, CreateStatusMessageForm, LocationForm, SurfSessionForm
 import requests
 from decouple import config
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from math import radians, sin, cos, sqrt, atan2
 from django.utils.timezone import make_aware, now, is_naive
 
@@ -170,7 +170,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['welcome_message'] = self.welcome_message
         context['surf_spots'] = SurfSpot.objects.filter(user=self.request.user)
-        context['recent_surf_sessions'] = SurfSession.objects.filter(user=self.request.user).order_by('-date')[:5]  # Fetch latest 5 sessions
+        context['recent_surf_sessions'] = SurfSession.objects.filter(user=self.request.user).order_by('-date')[:5]  
 
         return context
 
