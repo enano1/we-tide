@@ -20,10 +20,27 @@
                             <span class="news-feed-profile-name">{{ message.profile.fname }} {{ message.profile.lname }}</span>
                         </a>
                     </div>
+
+                    <!-- FOR LATER MAKE A SURF SESSION CONTAINER -->
+                    {% if message.surf_session %}
+                    <div class="surf-session-details">
+                        <p><strong>Surf Session Nickname:</strong> {{ message.surf_session.surf_spot.nickname }}</p>
+                        <p><strong>Surf Spot:</strong> {{ message.surf_session.surf_spot }}</p>
+                        <p><strong>Date:</strong> {{ message.surf_session.date|date:"F j, Y" }}</p>
+                        <p><strong>Duration:</strong> {{ message.surf_session.duration }}</p>
+                        <p><strong>Wave Rating:</strong> {{ message.surf_session.wave_rating }}/5</p>
+                        {% if message.surf_session.notes %}
+                            <p><strong>Notes:</strong> {{ message.surf_session.notes }}</p>
+                        {% endif %}
+                    </div>
+
+
                     <div class="news-feed-status">
                         <p>{{ message.message }}</p>
                         <span class="news-feed-timestamp">{{ message.timestamp|date:"F j, Y, g:i a" }}</span>
                     </div>
+
+                {% endif %}
 
                     {% if message.get_images.all %}
                         <div class="news-feed-images">
