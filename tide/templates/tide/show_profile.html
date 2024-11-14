@@ -92,6 +92,7 @@
                     </div>
         
                     <p><em>{{ status.timestamp|date:"F j, Y, g:i a" }}</em></p> 
+                    
                     {% if request.user == profile.user %}
                     <div class="status-actions">
                         <a href="{% url 'update_status_message' status.pk %}" class="update-status-button">Edit</a>
@@ -104,8 +105,7 @@
                         {% csrf_token %}
                         <button type="submit">Comment</button>
                     </form>
-                            
-                    
+                
                     <div class="comments">
                         {% for comment in status.comments.all %}
                             {% if comment.parent_comment is None %}

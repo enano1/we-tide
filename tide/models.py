@@ -123,7 +123,6 @@ class StatusMessage(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='status_messages')
     surf_session = models.OneToOneField(SurfSession, on_delete=models.SET_NULL, null=True, blank=True)
 
-
     def __str__(self):
         return f"{self.timestamp} - {self.message[:20]}..."
         
@@ -156,14 +155,6 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment {self.id} on StatusMessage {self.status_message.id}"
 
-
-# class Like(models.Model):
-#     '''
-#     A like by a user on a status message or image
-#     '''
-#     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='likes')
-#     status_message = models.ForeignKey('StatusMessage', on_delete=models.CASCADE, related_name='likes', null=True, blank=True)
-#     image = models.ForeignKey('Image', on_delete=models.CASCADE, related_name='likes', null=True, blank=True)
 
 
     

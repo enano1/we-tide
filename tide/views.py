@@ -36,6 +36,7 @@ class ShowProfilePageView(LoginRequiredMixin, DetailView):
     context_object_name = 'profile'
     login_url = '/login/'
 
+
 class CreateProfileView(CreateView):
     model = Profile
     form_class = CreateProfileForm
@@ -476,6 +477,7 @@ class DeleteCommentView(DeleteView):
             return reverse_lazy('news_feed', kwargs={'pk': self.object.status_message.profile.id})
         else:
             return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
+
 
 
 ############################################################################
