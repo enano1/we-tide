@@ -121,6 +121,7 @@ body {
     background-color: rgb(12, 12, 12); 
     border-radius: 10px;
     margin-bottom: 40px;
+    text-align: center;
 }
 
 .problem-box h3, .solution-box h3 {
@@ -234,6 +235,10 @@ footer .get-started {
     background-color: #1581b1; 
 }
 
+.login a {
+    text-decoration: none;
+    color: white;
+}
 /* Additional Button for Create Account */
 .login .create-account-btn {
     text-decoration: none;

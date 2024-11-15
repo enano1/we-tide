@@ -7,7 +7,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Login</button>  
-        <button class="create-account-btn"><a class="create-account-btn" href="{% url 'create_profile' %} ">Create an Account</a></button>
+        <button class="create-account-btn"><a style="display: block; width: 100%;" href="{% url 'create_profile' %} ">Create an Account</a></button>
         
 
     </form>
