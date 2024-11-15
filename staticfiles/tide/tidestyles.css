@@ -1,6 +1,375 @@
+
 /* tidestyles.css */
 
-/* Container for the profile grid */
+/* HOME PAGE STYLING */
+
+/* General Styles */
+* {
+    box-sizing: border-box; /* Include padding and border in the total width */
+}
+
+.home-page {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(12, 12, 12); 
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+/* Hide scrollbars */
+body::-webkit-scrollbar {
+    display: none; /* Hides scrollbar */
+}
+
+body {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    position: fixed; /* Keep navbar at the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white; 
+}
+
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: white; 
+    font-size: 20px;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    position: relative;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/tide/background_image1.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Hero Section Heading Styles */
+.hero-content h1 {
+    font-size: 4em; 
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero Section Button Styles */
+.hero-content .learn-more {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 15px 30px;
+    background-color: #126491; 
+    color: #fff; 
+    text-decoration: none; 
+    font-size: 1.2em;
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover Effect */
+.hero-content .learn-more:hover {
+    background-color: #1581b1; 
+}
+
+/* Remove focus outline on button click */
+.hero-content .learn-more:focus {
+    outline: none;
+}
+
+/* Content Section */
+.content-section {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgb(12, 12, 12); 
+    color: #efdcdc;
+}
+
+/* Problem-Solution Boxes */
+.problem-solution {
+    margin: 0 auto;
+}
+
+.problem-box, .solution-box {
+    padding: 20px;
+    background-color: rgb(12, 12, 12); 
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.problem-box h3, .solution-box h3 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.problem-box p, .solution-box p {
+    font-size: 1.25em;
+    line-height: 1.8;
+    color: #dedede;
+}
+
+/* Section Divider */
+.section-divider {
+    border: none;
+    border-top: 3px solid #126491;
+    width: 100%;
+    margin: 40px 0;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 20px;
+}
+
+footer .get-started {
+    padding: 10px 20px;
+    background-color: #126491;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-bottom: 150px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+}
+
+/* END OF HOME PAGE STYLING */
+
+/* LOGIN PAGE STYLING */
+
+/* General Body Style for Login Page */
+.login {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('/static/tide/background_image2.jpeg') no-repeat center center fixed; /* Set background image */
+    background-size: cover; /* Cover the entire viewport */
+    color: white; /* White text for better contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Centered Login Container */
+.login form {
+    background-color: #31858d; /* Solid blue background */
+    padding: 20px 40px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    width: 300px; /* Fixed width for the form */
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+/* Form Elements Styling */
+.login form h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: white; /* White title color for better contrast */
+}
+
+.login form input {
+    width: 100%;
+    padding: 10px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #333; /* Dark input background */
+    color: white; /* White text */
+}
+
+.login form input::placeholder {
+    color: #aaa; /* Light gray placeholder text */
+}
+
+/* Button Styling */
+.login form button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #126491; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login form button:hover {
+    background-color: #1581b1; /* Brighter blue on hover */
+}
+
+/* Additional Button for Create Account */
+.login .create-account-btn {
+    text-decoration: none;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #126491; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login .create-account-btn:hover {
+    background-color: #1581b1; /* Darker green on hover */
+}
+
+/* "New Here" Text Styling */
+.login form .new-account {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #aaa; /* Softer text color */
+}
+
+.login form .new-account a {
+    text-decoration: none;
+}
+
+.login form .new-account a:hover {
+    text-decoration: underline;
+    color: #126491; /* Blue on hover */
+}
+
+/* END OF LOGIN PAGE STYLING */
+
+/* DASHBOARD PAGE STYLING */
+
+/* General Dashboard Styling with Background Image */
+
+/* Dashboard-specific Background */
+.dashboardbody {
+    background: url('/static/tide/dashboard_background3.JPG') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh; /* Full viewport height */
+    overflow-x: hidden;
+}
+
+/* General Body Style (for other pages) */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(12, 12, 12); /* Default background for other pages */
+    color: white;
+}
+.dashboard {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    color: white;
+    border-radius: 8px;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    text-align: center;
+    background-color: rgba(18, 100, 145, 1); 
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.dashboard-header p {
+    font-size: 1.2em;
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    background-color: rgba(255, 255, 255, 0.9); /* Light overlay for readability */
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.dashboard-section h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #126491;
+}
+
+.dashboard-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-section ul li {
+    margin-bottom: 10px;
+}
+
+/* Links Styling */
+.link {
+    color: #126491;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.link:hover {
+    color: #1581b1;
+    text-decoration: underline;
+}
+
+/* Recent Activity Specific */
+.recent-activity ul li {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* END OF DASHBOARD PAGE STYLING */
+
+/* PROFILE PAGE STYLING */
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -9,7 +378,6 @@
     justify-items: center;
 }
 
-/* Each profile card styling */
 .profile-card {
     background-color: #ffffff;
     border-radius: 10px;
@@ -34,12 +402,10 @@
     display: block;
 }
 
-/* Profile information container */
 .profile-info {
     padding: 15px;
 }
 
-/* Profile name styling */
 .profile-name {
     font-size: 1.2em;
     font-weight: bold;
@@ -47,13 +413,11 @@
     margin-bottom: 5px;
 }
 
-/* Profile city styling */
 .profile-city {
     font-size: 1em;
     color: #777;
 }
 
-/* Button styles for the login and create profile links */
 .btn-primary {
     background-color: #007bff;
     color: white;
@@ -68,7 +432,6 @@
     background-color: #0056b3;
 }
 
-/* Logout button styling */
 button[type="submit"] {
     background-color: #f44336;
     color: white;
@@ -84,7 +447,6 @@ button[type="submit"]:hover {
 }
 
 
-/* Expanded profile card styling */
 .profile-expanded-card {
     max-width: 800px;
     margin: 0 auto;
@@ -94,7 +456,6 @@ button[type="submit"]:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Profile header styling */
 .profile-header {
     display: flex;
     align-items: center;
@@ -109,7 +470,6 @@ button[type="submit"]:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile details and newsfeed */
 .profile-details {
     margin-top: 20px;
 }
@@ -131,7 +491,6 @@ button[type="submit"]:hover {
     color: #555;
 }
 
-/* styles for the friends section in show_profile.html */
 .friends-section {
     margin: 20px 0;
 }
@@ -159,3 +518,123 @@ button[type="submit"]:hover {
     margin-top: 5px;
 }
 
+.profile-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.profile-button:hover {
+    background-color: #45a049;
+}
+
+.edit-profile-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #3659f4;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* END OF PROFILE PAGE STYLING */
+
+/* NEWS FEED STYLES */
+
+.news-feed-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.news-feed-item {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.news-feed-profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.news-feed-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.news-feed-profile-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.news-feed-status {
+    font-size: 1em;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.news-feed-timestamp {
+    font-size: 0.85em;
+    color: #888;
+}
+
+.news-feed-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    max-width: 25%;
+    height: 25%;
+}
+
+.status-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* END OF NEWS FEED STYLES */
+
+
+/* WEATHER STYLING */
+.weather_section {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* END OF WEATHER STYLING */

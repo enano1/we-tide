@@ -2,10 +2,16 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
+<body class="login">
     <h2>Create Profile</h2>
     <form method="post" enctype="multipart/form-data"> 
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create Profile</button>
+        <p class="new-account">Already have an account?</p>
+        <button class="create-account-btn" onclick="window.location.href='{% url 'login' %}'">Login</button>
     </form>
+</body>
+</html>
 {% endblock %}
+{% block for_nav %}False{% endblock %}

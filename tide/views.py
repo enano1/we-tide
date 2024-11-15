@@ -11,6 +11,7 @@ from decouple import config
 from datetime import datetime, timedelta
 from math import radians, sin, cos, sqrt, atan2
 from django.utils.timezone import make_aware, now, is_naive
+from django.contrib.auth.views import LoginView
 
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
@@ -23,6 +24,13 @@ class ShowAllProfilesView(LoginRequiredMixin, ListView):
         if self.request.user.is_authenticated:
             context['has_profile'] = Profile.objects.filter(user=self.request.user).exists()
         return context
+    
+class CustomLoginView(LoginView):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('dashboard')  
+        return super().dispatch(request, *args, **kwargs)
+
 
 class AllFriendsView(LoginRequiredMixin, View):
     def get(self, request):
@@ -45,6 +53,12 @@ class CreateProfileView(CreateView):
     def form_valid(self, form):
         self.object = form.save()
         return redirect('show_profile', pk=self.object.pk)
+    
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('dashboard')  
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model = Profile

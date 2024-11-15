@@ -1,47 +1,41 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'tide/tidestyles.css' %}">
-{% block content %}
-    <h2>{{ welcome_message }}</h2>
-    <div">
-        <p>Welcome to your dashboard! Start working on your next project and explore the available features.</p>
+{% extends 'tide/base.html' %}
 
-        {% if not request.user.is_authenticated %}
-            <p><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'create_profile' %}">Create an Account</a> to connect with others.</p>
-        {% else %}
-            <form action="{% url 'logout' %}" method="post" class="logout-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-logout">Logout</button>
-            </form>
-            
-            <div>
-                <h2>Next Steps</h3>
-                <ul>
-                    <li><a href="{% url 'all_friends' %}">View Friends</a></li>
-                    <li><a href="{% url 'show_profile' request.user.profile.pk %}">View My Profile</a></li>
-                    <li><a href="{% url 'location_input' %}">Find Nearest NOAA Station</a></li>
-                    <li><a href="{% url 'saved_locations' %}">View Saved Surf Spots</a></li>
-                    <li><a href="{% url 'surf_sessions_public' %}">View Public Surf Sessions</a></li>
-                </ul>
-            </div>
-        {% endif %}
+{% block title %}Dashboard - We Tide{% endblock %}
+{% block content %}
+<body class="dashboard-body">
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>{{ welcome_message }}</h1>
+        <p>Welcome to your personalized dashboard. Stay on top of your surfing activities and goals.</p>
     </div>
-    
-    <div>
+
+    <!-- Next Steps Section -->
+    <div class="dashboard-section next-steps recent-activity">
+        <h2>Next Steps</h2>
+        <p>
+            <a href="{% url 'all_friends' %}" class="link">View Friends</a><br>
+            <a href="{% url 'show_profile' request.user.profile.pk %}" class="link">View My Profile</a><br>
+            <a href="{% url 'location_input' %}" class="link">Find Nearest NOAA Station</a><br>
+            <a href="{% url 'saved_locations' %}" class="link">View Saved Surf Spots</a><br>
+            <a href="{% url 'surf_sessions_public' %}" class="link">View Public Surf Sessions</a>
+        </p>
         <h2>Recent Activity</h2>
         {% if recent_surf_sessions %}
             <ul>
-                <a href="{% url 'surf_sessions' %}">View All Surf Sessions</a>
+                <a href="{% url 'surf_sessions' %}" class="link">View All Surf Sessions</a>
                 {% for session in recent_surf_sessions %}
                     <li>
                         <strong>{{ session.surf_spot.nickname }}</strong> 
                         on {{ session.date }} - 
                         Rating: {{ session.wave_rating }}
-                        <a href="{% url 'view_surf_session' session.pk %}">View Details</a>
+                        <a href="{% url 'view_surf_session' session.pk %}" class="link">View Details</a>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No recent surf sessions. <a href="{% url 'create_surf_session' %}">Log a new session</a>.</p>
+            <p>No recent surf sessions. <a href="{% url 'create_surf_session' %}" class="link">Log a new session</a>.</p>
         {% endif %}
     </div>
+</div>
+</body>
 {% endblock %}

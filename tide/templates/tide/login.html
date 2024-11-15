@@ -1,12 +1,18 @@
-<!-- templates/tide/login.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
+<body class="login">
     <h2>Login</h2>
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button type="submit">Login</button>  
+        <button class="create-account-btn"><a class="create-account-btn" href="{% url 'create_profile' %} ">Create an Account</a></button>
+        
+
     </form>
-    <p>New here? <a href="{% url 'create_profile' %}">Create an Account</a></p>
+    
+
+</body>
 {% endblock %}
+{% block for_nav %}False{% endblock %}

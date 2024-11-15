@@ -4,60 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>We Tide: Surf Smarter</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tide/tidestyles.css' %}">
 </head>
-<body>
+<body class="home-page">
 
     <header>
-        <div>
-            <h1>We Tide</h1>
-            <nav>
+        <div class="navbar">
+            <div class="logo">We Tide</div>
+            <div class="nav-links">
                 <a href="/dashboard/">Sign in</a>
-            </nav>
+            </div>
         </div>
     </header>
 
-    <section>
-        <div>
-            <h3>Why We Tide?</h3>
-            <p>
-                1. Get real-time tide data from NOAA stations <br>
-                2. Optimize your surf sessions with personalized recommendations <br>
-                3. Connect with the surfing community and share experiences
-            </p>
-            <hr>
-    
-            <h3>The Problem</h3>
-            <p>
-                Finding the best surf conditions can be difficult and time-consuming <br>
-                Existing apps lack community-driven insights and personalized data
-            </p>
-            <hr>
-    
-            <h3>Our Solution</h3>
-            <p>
-                1. Leverage NOAA and weather APIs for precise surf condition forecasting <br>
-                2. Save your favorite surf spots and log your sessions <br>
-                3. Engage with other surfers, view their sessions, and exchange tips
-            </p>
-            <hr>
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Surf Smarter</h1>
+            <a href="#content-section" class="learn-more">Learn more</a>
         </div>
     </section>
 
-    <section>
-        <div>
-            <h3>Key Features</h3>
-            <ul>
-                <li>View tide graphs and forecasted surfing conditions</li>
-                <li>Access detailed weather and oceanographic data</li>
-                <li>Create and share your surf sessions</li>
-                <li>Track your surfing history and progress</li>
-            </ul>
+    <section id="content-section" class="content-section">
+        <div class="problem-solution">
+            <div class="problem-box">
+                <h3>Why We Tide?</h3>
+                <p>
+                    1. Get real-time tide data from NOAA stations <br>
+                    2. Optimize your surf sessions with personalized recommendations <br>
+                    3. Connect with the surfing community and share experiences
+                </p>
+            </div>
+            <hr class="section-divider">
+    
+            <div class="problem-box">
+                <h3>The Problem</h3>
+                <p>
+                    Finding the best surf conditions can be difficult and time-consuming <br>
+                    Existing apps lack community-driven insights and personalized data
+                </p>
+            </div>
+            <hr class="section-divider">
+    
+            <div class="solution-box">
+                <h3>Our Solution</h3>
+                <p>
+                    1. Leverage NOAA and weather APIs for precise surf condition forecasting <br>
+                    2. Save your favorite surf spots and log your sessions <br>
+                    3. Engage with other surfers, view their sessions, and exchange tips
+                </p>
+            </div>
+            <hr class="section-divider">
+            <div class="solution-box">
+                <h3>Key Features</h3>
+                <p>
+                    1. View tide graphs and forecasted surfing conditions <br>
+                    2. Access detailed weather and oceanographic data <br>
+                    3. Create and share your surf sessions <br>
+                    4. Track your surfing history and progress
+                </p>
+    
         </div>
     </section>
 
     <footer>
         <a href="/dashboard/">
-            <button>Join the Tide!</button>
+            <div class="hero-content">
+                <button class="learn-more">Join the Tide!</button>
+            </div>
         </a>
     </footer>
 
