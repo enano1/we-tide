@@ -56,7 +56,7 @@ body {
 /* Hero Section Styles */
 .hero-section {
     position: relative;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/static/tide/background_image1.jpg') no-repeat center center;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://cs-people.bu.edu/enano1/background_image1.jpg') no-repeat center center;
     background-size: cover;
     height: 100vh; 
     display: flex;
@@ -176,7 +176,7 @@ footer .get-started {
 .login {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: url('/static/tide/background_image2.jpeg') no-repeat center center fixed; 
+    background: url('https://cs-people.bu.edu/enano1/background_image2.jpeg') no-repeat center center fixed; 
     background-size: cover; 
     color: white; 
     display: flex;
@@ -280,7 +280,7 @@ footer .get-started {
 
 /* Dashboard-specific Background */
 .dashboard-body {
-    background: url('/static/tide/background_image3.jpg') no-repeat center center fixed;
+    background: url('https://cs-people.bu.edu/enano1/background_image3.JPG') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
 }
