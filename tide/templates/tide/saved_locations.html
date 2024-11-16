@@ -1,6 +1,8 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
+<body class="location-body">
+    <div class="location-content-wrapper">
     <h1>Saved Surf Spots</h1>
 
     {% if surf_spots %}
@@ -20,4 +22,6 @@
     {% else %}
         <p>No saved surf spots yet. <a href="{% url 'location_input' %}">Find a station</a> to save one.</p>
     {% endif %}
+    </div>
+</body>
 {% endblock %}

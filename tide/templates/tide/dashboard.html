@@ -8,7 +8,10 @@
         <h1>{{ welcome_message }}</h1>
         <p>Welcome to your personalized dashboard. Stay on top of your surfing activities and goals.</p>
     </div>
-
+    {% comment %} <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="link">Logout</button>
+    </form> {% endcomment %}
     <!-- Next Steps Section -->
     <div class="dashboard-section next-steps recent-activity">
         <h2>Next Steps</h2>
@@ -28,7 +31,7 @@
                         <strong>{{ session.surf_spot.nickname }}</strong> 
                         on {{ session.date }} - 
                         Rating: {{ session.wave_rating }}
-                        <a href="{% url 'view_surf_session' session.pk %}" class="link">View Details</a>
+                        <a style="float: right;" href="{% url 'view_surf_session' session.pk %}" class="link"">View Details</a>
                     </li>
                 {% endfor %}
             </ul>

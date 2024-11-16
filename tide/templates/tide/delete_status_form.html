@@ -1,25 +1,29 @@
-<!-- templates/tide/delete_status_form.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h2>Are you sure you want to delete this status message?</h2>
+<body class="forms-body">
+<div class="content-wrapper">
+    <div class="forms">
+        <h2>Are you sure you want to delete this status message?</h2>
 
-    <p>{{ status_message.message }}</p>
+        <p>{{ status_message.message }}</p>
+        <p>Posted on: {{ status_message.timestamp|date:"F j, Y, g:i a" }}</p>
 
-    <p>Posted on: {{ status_message.timestamp|date:"F j, Y, g:i a" }}</p>
+        {% if status_message.get_images %}
+        <div class="status-images">
+            {% for image in status_message.get_images %}
+                <img src="{{ image.image_file.url }}" alt="Status Image" class="status-image">
+            {% endfor %}
+        </div>
+        {% endif %}
 
-    {% if status_message.get_images %}
-    <div class="status-images">
-        {% for image in status_message.get_images %}
-            <img src="{{ image.image_file.url }}" alt="Status Image" style="max-width: 200px; max-height: 200px;">
-        {% endfor %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit">Confirm Delete</button>
+        </form>
+
+        <a href="{% url 'show_profile' status_message.profile.pk %}" class="cancel-button">Cancel</a>
     </div>
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="profile-button">Confirm Delete</button>
-    </form>
-
-    <a href="{% url 'show_profile' status_message.profile.pk %}" class="profile-button">Cancel</a>
+</div>
+</body>
 {% endblock %}

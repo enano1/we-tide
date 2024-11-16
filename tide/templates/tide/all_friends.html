@@ -1,44 +1,43 @@
 {% extends 'tide/base.html' %}
+
 {% block title %}View Friends - We Tide{% endblock %}
+
 {% block content %}
-    <h2>All Friends</h2>
+<body class="all-friends-body">
+    <div class="content-wrapper">
+        <h2 class="all-friends-title">All Friends</h2>
 
-    {% if request.user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    {% endif %}
 
-    <div class="profile-grid">
-        {% for friend in profile.get_friends %}
-            <div class="profile-card">
-                <a href="{% url 'show_profile' friend.pk %}">
-                    {% if friend.image %}
-                        <img src="{{ friend.image.url }}" class="profile-image" alt="{{ friend.fname }} {{ friend.lname }}">
-                    {% else %}
-                        <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
-                    {% endif %}
-                </a>
-                <div class="profile-info">
-                    <div class="profile-name">{{ friend.fname }} {{ friend.lname }}</div>
-                    <div class="profile-city">{{ friend.city }}</div>
+        <div class="profile-grid">
+            {% for friend in profile.get_friends %}
+                <div class="profile-card">
+                    <a href="{% url 'show_profile' friend.pk %}">
+                        {% if friend.image %}
+                            <img src="{{ friend.image.url }}" class="profile-image" alt="{{ friend.fname }} {{ friend.lname }}">
+                        {% else %}
+                            <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
+                        {% endif %}
+                    </a>
+                    <div class="profile-info">
+                        <div class="profile-name">{{ friend.fname }} {{ friend.lname }}</div>
+                        <div class="profile-city">{{ friend.city }}</div>
+                    </div>
+
+                    <div class="status-messages">
+                        <h4>Recent Status Message</h4>
+                        {% with friend.get_status_messages|slice:":1" as latest_status %}
+                            <div class="status-message">
+                                <p>{{ latest_status.0.message }}</p>
+                                {% if latest_status.0.image %}
+                                    <img src="{{ latest_status.0.image.url }}" class="status-image" alt="Status Image">
+                                {% endif %}
+                                <small>Posted on {{ latest_status.0.timestamp }}</small>
+                            </div>
+                        {% endwith %}
+                    </div>
                 </div>
-
-                <div class="status-messages">
-                    <h4>Status Messages</h4>
-                    {% with friend.get_status_messages|slice:":1" as latest_status %}
-                        <div class="status-message">
-                            <p>{{ latest_status.0.message }}</p>
-                            {% if latest_status.0.image %}
-                                <img src="{{ latest_status.0.image.url }}" class="status-image" alt="Status Image">
-                            {% endif %}
-                            <small>Posted on {{ latest_status.0.timestamp }}</small>
-                        </div>
-                    {% endwith %}
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+</body>
 {% endblock %}
-

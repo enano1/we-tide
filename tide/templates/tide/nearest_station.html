@@ -1,29 +1,36 @@
+<!-- tide/templates/tide/nearest_station.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h1>Nearest NOAA Station</h1>
-    <p><strong>Closest Station:</strong> {{ station.name }}</p>
-    <p><strong>Station ID:</strong> {{ station.id }}</p>
-    <p><strong>Location:</strong> {{ station.lat }}, {{ station.lng }}</p>
+<body class="location-body">
+    <div class="location-content-wrapper">
+        <h1>Nearest NOAA Station</h1>
+        <p><strong>Closest Station:</strong> {{ station.name }}</p>
+        <p><strong>Station ID:</strong> {{ station.id }}</p>
+        <p><strong>Location:</strong> {{ station.lat }}, {{ station.lng }}</p>
 
-    <a href="{% url 'tide_data' station.id %}">View Tide Data for This Station</a>
-    <br>
-    <a href="{% url 'weather_view' station.lat station.lng %}">View Weather Forecast for This Location</a>
-    <br>
-    <a href="https://www.google.com/maps/search/?api=1&query={{ station.lat }},{{ station.lng }}" target="_blank">
-        Find Location in Google Maps
-    </a>
-    <br><br>
+        <div class="station-links">
+            <a href="{% url 'tide_data' station.id %}">View Tide Data for This Station</a>
+            <br>
+            <a href="{% url 'weather_view' station.lat station.lng %}">View Weather Forecast for This Location</a>
+            <br>
+            <a href="https://www.google.com/maps/search/?api=1&query={{ station.lat }},{{ station.lng }}" target="_blank">
+                Find Location in Google Maps
+            </a>
+        </div>
 
-    <!-- Save Station Form -->
-    <form method="post" action="{% url 'save_station' %}">
-        {% csrf_token %}
-        <input type="hidden" name="station_id" value="{{ station.id }}">
-        <input type="hidden" name="name" value="{{ station.name }}">
-        <input type="hidden" name="latitude" value="{{ station.lat }}">
-        <input type="hidden" name="longitude" value="{{ station.lng }}">
-        <label for="nickname">Nickname (optional):</label>
-        <input type="text" id="nickname" name="nickname" placeholder="e.g., Favorite Surf Spot">
-        <button type="submit">Save This Station</button>
-    </form>
+        <!-- Save Station Form -->
+        <form method="post" action="{% url 'save_station' %}" class="station-form">
+            {% csrf_token %}
+            <input type="hidden" name="station_id" value="{{ station.id }}">
+            <input type="hidden" name="name" value="{{ station.name }}">
+            <input type="hidden" name="latitude" value="{{ station.lat }}">
+            <input type="hidden" name="longitude" value="{{ station.lng }}">
+            
+            <label for="nickname">Nickname (optional):</label>
+            <input type="text" id="nickname" name="nickname" placeholder="e.g., Favorite Surf Spot">
+            <button type="submit">Save This Station</button>
+        </form>
+    </div>
+</body>
 {% endblock %}

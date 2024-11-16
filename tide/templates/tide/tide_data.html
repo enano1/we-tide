@@ -1,50 +1,49 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
-<a href="javascript:history.back()" class="profile-button">Go Back</a>
+<body class="location-body">
+    <div class="location-content-wrapper" style="margin-top: 70px; margin-bottom: 70px;">
+        <a href="javascript:history.back()" class="profile-button">Go Back</a>
 
-<h1>Tide Data for Station {{ station_id }}</h1>
-<h2>Key Insights</h2>
-<ul>
-    {% if max_tide and min_tide %}
-        <li><strong>Highest Tide:</strong> {{ max_tide.t }} at {{ max_tide.v }} meters</li>
-        <li><strong>Lowest Tide:</strong> {{ min_tide.t }} at {{ min_tide.v }} meters</li>
-    {% else %}
-        <li>No tide data available for this date.</li>
-    {% endif %}
-</ul>
+        <h1>Tide Data for Station {{ station_id }}</h1>
+        <h2>Key Insights</h2>
+        <ul>
+            {% if max_tide and min_tide %}
+                <li><strong>Highest Tide:</strong> {{ max_tide.t }} at {{ max_tide.v }} meters</li>
+                <li><strong>Lowest Tide:</strong> {{ min_tide.t }} at {{ min_tide.v }} meters</li>
+            {% else %}
+                <li>No tide data available for this date.</li>
+            {% endif %}
+        </ul>
 
-<h2>Check Surfing Times for a Specific Day</h2>
-<form method="GET" action="{% url 'tide_data' station_id %}">
-    <label for="date">Select Date:</label>
-    <input type="date" id="date" name="date" value="{{ selected_date }}" required>
-    <button type="submit">Get Data</button>
-</form>
+        <h2>Check Surfing Times for a Specific Day</h2>
+        <form method="GET" action="{% url 'tide_data' station_id %}" class="tide-form">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" value="{{ selected_date }}" required>
+            <button type="submit">Get Data</button>
+        </form>
 
-<h2>Understanding Tides</h2>
-<p><strong>Spring Tides:</strong> Spring tides occur during the full moon and new moon phases. During these times, the sun, moon, and Earth align, causing higher high tides and lower low tides due to the combined gravitational pull.</p>
+        <h2>Understanding Tides</h2>
+        <p><strong>Spring Tides:</strong> Occur during the full and new moon phases...</p>
+        <p><strong>Neap Tides:</strong> Occur during the first and third quarter moon phases...</p>
+        <p>If you want to learn more about tides, <a href="{% url 'tide_info' %}">click here</a>.</p>
 
-<p><strong>Neap Tides:</strong> Neap tides happen during the first and third quarter moon phases. The sun and moon are at right angles relative to Earth, reducing the gravitational effect, which results in lower high tides and higher low tides.</p>
-<p>If you want to learn more about how spring tides and neap tides affect surfers, <a href="{% url 'tide_info' %}">click here</a>.</p>
+        <h3>Recommended Surfing Times:</h3>
+        {% if optimal_times %}
+            <ul id="surfing-times">
+                <li>Loading...</li>
+            </ul>
+        {% else %}
+            <p>No recommended surfing times available.</p>
+        {% endif %}
 
+        <div id="pagination-controls">
+            <button id="prev-page" disabled>Previous</button>
+            <span id="page-info">Page 1 of 1</span>
+            <button id="next-page" disabled>Next</button>
+        </div>
 
-<h3>Recommended Surfing Times:</h3>
-{% if optimal_times %}
-    <ul id="surfing-times">
-        <li>Loading...</li> 
-    </ul>
-{% else %}
-    <p>No recommended surfing times are available for this date, or this station has been deprecated.</p>
-{% endif %}
-
-<div id="pagination-controls">
-    <button id="prev-page" disabled>Previous</button>
-    <span id="page-info">Page 1 of 1</span>
-    <button id="next-page" disabled>Next</button>
-</div>
-
-<p><em>Tip: Tide shifts approximately 50 minutes later each day, so plan your activities accordingly for future days.</em></p>
-
+        <p><em>Tip: Tide shifts approximately 50 minutes later each day...</em></p>
 
 <canvas id="tideChart"></canvas>
 

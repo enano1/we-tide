@@ -1,65 +1,70 @@
 {% extends 'tide/base.html' %}
 {% block content %}
-<h2>Surf Sessions From All Users</h2>
+<body class="location-body">
+    <div class="location-content-wrapper">
+        <h2>Surf Sessions From All Users</h2>
 
-<form method="get" action="{% url 'surf_sessions_public' %}">
-    <label for="date_from">Date From:</label>
-    <input type="date" name="date_from" value="{{ request.GET.date_from }}">
+        <form method="get" action="{% url 'surf_sessions_public' %}">
+            <label for="date_from">Date From:</label>
+            <input type="date" name="date_from" value="{{ request.GET.date_from }}">
 
-    <label for="date_to">Date To:</label>
-    <input type="date" name="date_to" value="{{ request.GET.date_to }}">
+            <label for="date_to">Date To:</label>
+            <input type="date" name="date_to" value="{{ request.GET.date_to }}">
+            <br>
+            <label for="surf_spot">Surf Spot:</label>
+            <select name="surf_spot">
+                <option value="">All Spots</option>
+                {% for spot in surf_spots %}
+                <option value="{{ spot.id }}" {% if request.GET.surf_spot == spot.id|stringformat:"s" %}selected{% endif %}>
+                    {{ spot }}
+                </option>
+                {% endfor %}
+            </select>
 
-    <label for="surf_spot">Surf Spot:</label>
-    <select name="surf_spot">
-        <option value="">All Spots</option>
-        {% for spot in surf_spots %}
-        <option value="{{ spot.id }}" {% if request.GET.surf_spot == spot.id|stringformat:"s" %}selected{% endif %}>
-            {{ spot }}
-        </option>
-        {% endfor %}
-    </select>
+            <label for="wave_rating">Wave Rating:</label>
+            <select name="wave_rating">
+                <option value="">All Ratings</option>
+                {% for rating in "12345"|slice:":" %}
+                <option value="{{ rating }}" {% if request.GET.wave_rating == rating|stringformat:"s" %}selected{% endif %}>
+                    {{ rating }}
+                </option>
+                {% endfor %}
+            </select>
 
-    <label for="wave_rating">Wave Rating:</label>
-    <select name="wave_rating">
-        <option value="">All Ratings</option>
-        {% for rating in "12345"|slice:":" %}
-        <option value="{{ rating }}" {% if request.GET.wave_rating == rating|stringformat:"s" %}selected{% endif %}>
-            {{ rating }}
-        </option>
-        {% endfor %}
-    </select>
-
-    <button type="submit">Filter</button>
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Date</th>
-            <th>Spot</th>
-            <th>Duration</th>
-            <th>Wave Rating</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if surf_sessions %}
-            {% for session in surf_sessions %}
+            <button type="submit">Filter</button>
+        </form>
+    <div class="surf-sessions-table">
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ session.user }}</td>
-                <td>{{ session.date }}</td>
-                <td>{{ session.surf_spot }}</td>
-                <td>{{ session.duration }}</td>
-                <td>{{ session.wave_rating }}</td>
-                <td>{{ session.notes|default:"No notes" }}</td>
+                <th>User</th>
+                <th>Date</th>
+                <th>Spot</th>
+                <th>Duration</th>
+                <th>Wave Rating</th>
+                <th>Notes</th>
             </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="5">No surf sessions available.</td>
-            </tr>
-        {% endif %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% if surf_sessions %}
+                {% for session in surf_sessions %}
+                <tr>
+                    <td>{{ session.user }}</td>
+                    <td>{{ session.date }}</td>
+                    <td>{{ session.surf_spot }}</td>
+                    <td>{{ session.duration }}</td>
+                    <td>{{ session.wave_rating }}</td>
+                    <td>{{ session.notes|default:"No notes" }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">No surf sessions available.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
 {% endblock %}

@@ -1,10 +1,14 @@
 {% extends 'tide/base.html' %}
 {% block content %}
+<body class="location-body">
+    <div class="location-content-wrapper">
 <h2>New Surf Session</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" >Save</button>
 </form>
-<a href="{% url 'surf_sessions' %}" >Back to Surf Sessions</a>
+<a href="{% url 'surf_sessions' %}" class="surf-session-button" >Back to Surf Sessions</a>
+</div>
+</body>
 {% endblock %}

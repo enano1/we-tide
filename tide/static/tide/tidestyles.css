@@ -87,7 +87,7 @@ body {
     text-decoration: none; 
     font-size: 1.2em;
     border: none; 
-    border-radius: 4px; 
+    /* border-radius: 4px;  */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -290,7 +290,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: rgb(12, 12, 12); 
-    color: white;
+    color: rgb(0, 0, 0);
 }
 .dashboard {
     padding: 20px;
@@ -461,21 +461,24 @@ body {
 }
 
 button[type="submit"] {
-    background-color: #f44336;
+    background-color: #5de168;
     color: white;
-    padding: 8px 16px;
+    padding: 5px 15px;
     border: none;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 button[type="submit"]:hover {
-    background-color: #d32f2f;
+    background-color: #2fd38c;
 }
 
 
 .profile-expanded-card {
+    margin-top: 50px;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -487,7 +490,8 @@ button[type="submit"]:hover {
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 20px;    
+    color: #000000;
 }
 
 .profile-image-large {
@@ -516,7 +520,8 @@ button[type="submit"]:hover {
 }
 
 .profile-feed p {
-    color: #555;
+    color: #ffffff;
+    text-decoration: none;
 }
 
 .friends-section {
@@ -532,7 +537,9 @@ button[type="submit"]:hover {
 .friend-card {
     margin-right: 10px;
     text-align: center;
+    text-decoration: none;
 }
+
 
 .friend-image {
     width: 60px;
@@ -544,23 +551,24 @@ button[type="submit"]:hover {
 .friend-name {
     font-size: 0.9em;
     margin-top: 5px;
+    text-decoration: none;
 }
 
 .profile-button {
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #5de168;
     color: white;
     text-align: center;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     transition: background-color 0.3s ease;
 }
 
 .profile-button:hover {
-    background-color: #45a049;
+    background-color: #2fd38c;
 }
 
 .edit-profile-button {
@@ -572,11 +580,117 @@ button[type="submit"]:hover {
     text-align: center;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     transition: background-color 0.3s ease;
 }
 
+.profile-body {
+    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    text-decoration: none;
+    display: block; /* Ensure the element is visible */
+}
+
 /* END OF PROFILE PAGE STYLING */
+
+/* ALL FRIENDS PAGE STYLING */
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+
+.all-friends-body {
+    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+}
+
+.update-status-button {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.delete-status-button {
+    color: red;
+    text-decoration: none;
+
+}
+
+/* Status Messages Styling */
+.status-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.status-messages {
+    color: black; 
+    font-family: Arial, sans-serif; 
+    margin-top: 20px; 
+    
+}
+
+.status-message {
+    color: black;
+    margin-bottom: 10px; 
+    font-size: 14px; 
+    
+    
+}
+
+.status-message p {
+    margin: 0; 
+    text-decoration: none;
+    display: flex; 
+    justify-content: center; 
+}
+
+.status-message small {
+    display: block; 
+    margin-top: 5px;
+    font-size: 12px; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.friend-card {
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.friend-card a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+
+.friend-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; 
+    margin-bottom: 8px;
+}
+
+.friend-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333; 
+}
+
+
+/* END OF ALL FRIENDS PAGE STYLING */
 
 /* NEWS FEED STYLES */
 
@@ -635,34 +749,295 @@ h3 {
 .news-feed-timestamp {
     font-size: 0.85em;
     color: #888;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
 }
 
 .news-feed-images {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 10px;
+    margin: 0 auto;
     max-width: 25%;
     height: 25%;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 .status-image {
-    max-width: 100%;
-    height: auto;
+    max-width: 200px;
+    height: 200px;
+    object-fit: cover;
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+
 }
 
 /* END OF NEWS FEED STYLES */
 
 
 /* WEATHER STYLING */
-.weather_section {
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.weather-section h1,
+.weather-section h2 {
+    margin-bottom: 15px;
+    color: #007BFF;
 }
 
+.weather-section p {
+    margin: 8px 0;
+}
+
+ul {
+    list-style-type: disc;
+    margin: 10px 0 20px 20px;
+}
 /* END OF WEATHER STYLING */
+
+/* PROFILE FORM STYLING */
+
+/* General Styling for All Forms */
+.forms-body {
+    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+
+}
+.forms {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.forms h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.forms input[type="text"],
+.forms input[type="email"],
+.forms input[type="password"],
+.forms textarea,
+.forms select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.forms button {
+    width: 100%;
+    padding: 10px;
+    background-color: #126491;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.forms button:hover {
+    background-color: #1581b1;
+}
+
+.forms .cancel-button {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #fc0000;
+    text-decoration: none;
+}
+
+.forms .cancel-button:hover {
+    text-decoration: none;
+}
+
+
+/* END OF FORM STYLING */
+
+/* END OF PROFILE FORM STYLING */
+
+/* LOCATION INPUT STYLING */
+
+/* Location Input Page Styling */
+.location-body {
+    background: url('/static/tide/background_image6.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.location-content-wrapper {
+    background-color: rgba(255, 255, 255, 0.785); 
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    text-align: center;
+    width: 100%;
+    margin-top: 70px;
+    margin-bottom: 70px;
+
+}
+
+.location-form {
+    margin-top: 15px;
+}
+
+.location-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.location-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.location-form button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.location-form button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.station-links {
+    margin-top: 15px;
+}
+
+.station-links a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.station-links a:hover {
+    text-decoration: underline;
+}
+
+.station-form {
+    margin-top: 20px;
+}
+
+.station-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.station-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.station-form button {
+    background-color: #5de168;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    /* border-radius: 4px; */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.station-form button:hover {
+    background-color: #2fd38c;
+}
+
+.saved-locations a{
+    text-decoration: none;
+    color: #007BFF
+}
+
+/* END OF LOCATION INPUT STYLING */
+
+/* SURF SESSION STYLING */
+
+.surf-session-button {
+    background-color: #5de168;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    /* border-radius: 4px; */
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.surf-session-button:hover {
+    background-color: #2fd38c;
+}
+
+.surf-sessions-table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.surf-sessions-table th,
+.surf-sessions-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.surf-sessions-table th {
+    background-color: #f4f4f4;
+}
+
+.surf-sessions-table a {
+    text-decoration: none;
+}
+
+.surf-sessions-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.surf-sessions-table th, 
+.surf-sessions-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.surf-sessions-table th {
+    background-color: #f4f4f4;
+}

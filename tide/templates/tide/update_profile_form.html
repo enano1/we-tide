@@ -1,16 +1,18 @@
-<!-- templates/mini_fb/update_profile_form.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <div class="form-container">
+<body class="forms-body">
+<div class="content-wrapper">
+    <div class="forms">
         <h2>Update Profile</h2>
-        <form method="POST" enctype="multipart/form-data" class="styled-form">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <br><br>
-            <button type="submit" class="profile-button">Update Profile</button>
+            <button type="submit">Update Profile</button>
         </form>
 
-        <a href="{% url 'show_profile' request.user.profile.pk %}" class="profile-button">Back to profile</a>
+        <a href="{% url 'show_profile' request.user.profile.pk %}" class="cancel-button">Back to Profile</a>
     </div>
+</div>
+</body>
 {% endblock %}

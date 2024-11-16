@@ -1,78 +1,72 @@
+<!-- tide/templates/tide/weather_forecast.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
+<body class="location-body">
+    <div class="location-content-wrapper">
+        <a href="javascript:history.back()" class="profile-button">Go Back</a>
 
-<a href="javascript:history.back()" class="profile-button">Go Back</a>
+        <div class="weather-section">
+            <h1>Weather Forecast</h1>
 
-<div class="weather_section">
-<h1>Weather Forecast</h1>
+            {% if weather_data %}
+                <p><strong>Location:</strong> {{ weather_data.name }}</p>
+                <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°F</p>
+                <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°F</p>
+                <p><strong>Weather:</strong> {{ weather_data.weather.0.description|title }}</p>
+                <p><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
+                <p><strong>Wind:</strong> {{ weather_data.wind.speed }} m/s, {{ weather_data.wind.deg }}°</p>
+            {% else %}
+                <p>Weather data is not available.</p>
+            {% endif %}
+        </div>
 
-{% if weather_data %}
-    <p><strong>Location:</strong> {{ weather_data.name }}</p>
-    <p><strong>Temperature:</strong> {{ weather_data.main.temp }}°F</p>
-    <p><strong>Feels Like:</strong> {{ weather_data.main.feels_like }}°F</p>
-    <p><strong>Weather:</strong> {{ weather_data.weather.0.description|title }}</p>
-    <p><strong>Humidity:</strong> {{ weather_data.main.humidity }}%</p>
-    <p><strong>Wind:</strong> {{ weather_data.wind.speed }} m/s, {{ weather_data.wind.deg }}°</p>
-{% else %}
-    <p>Weather data is not available.</p>
-{% endif %}
-</div>
+        <div class="weather-section">
+            <h2>Moon Phase</h2>
+            {% if moon_phase %}
+                <p><strong>Current Phase:</strong> {{ moon_phase.phase_name }}</p>
+                <p>{{ moon_phase.phase_description }}</p>
+                {% if moon_phase.phase_name in "Waxing Waning" %}
+                    <p><em>{{ moon_phase.phase_description }}</em></p>
+                {% endif %}
+            {% else %}
+                <p>Moon phase data is not available.</p>
+            {% endif %}
 
-<div class="weather_section">
-<h2>Moon Phase</h2>
-{% if moon_phase %}
-    <p><strong>Current Phase:</strong> {{ moon_phase.phase_name }}</p>
-    <p>{{ moon_phase.phase_description }}</p>
-    {% if moon_phase.phase_name == "Waxing" or moon_phase.phase_name == "Waxing" %}
-        <p><em>Waxing phases occur as the moon moves from New Moon to Full Moon. Tidal ranges increase, creating stronger waves. Ideal for intermediate surfers.</em></p>
-    {% elif moon_phase.phase_name == "Waning" or moon_phase.phase_name == "Waning" %}
-        <p><em>Waning phases occur as the moon moves from Full Moon to New Moon. Tidal ranges decrease, offering more stable conditions. Great for a calmer surf.</em></p>
-    {% endif %}
-{% else %}
-    <p>Moon phase data is not available.</p>
-{% endif %}
-
-<h2>Guide to Moon Phases and Tides</h2>
-<ul>
-    <li><strong>New Moon:</strong> Spring tides (high highs and low lows). Great for strong waves.</li>
-    <li><strong>Full Moon:</strong> Spring tides (similar to New Moon).</li>
-    <li><strong>First Quarter:</strong> Neap tides (moderate highs and lows). Best for beginners.</li>
-    <li><strong>Last Quarter:</strong> Neap tides (similar to First Quarter).</li>
-</ul>
-<p><em>Tip:</em> Spring tides provide stronger waves, ideal for experienced surfers. Neap tides are more stable, better for beginners.</p>
-</div>
-<h1>How Wind, Ocean Depth, and Geological Features Influence Wave Formation</h1>
-
-<div class="weather_section">
-    <h2>Wind</h2>
-    <p>Wind is the primary driver of wave formation. When wind blows across the surface of the ocean, it transfers energy to the water, generating waves. The following factors influence the size and strength of waves:</p>
-    <ul>
-        <li><strong>Wind Speed:</strong> Faster winds exert more force on the water surface, creating larger waves.</li>
-        <li><strong>Duration:</strong> The longer the wind blows over a given area, the more energy is transferred, resulting in bigger waves.</li>
-        <li><strong>Fetch:</strong> This refers to the distance over which the wind blows uninterrupted across the water surface. A longer fetch allows for the development of larger waves.</li>
-    </ul>
-
-
-    <h2>Ocean Depth</h2>
-    <p>Ocean depth significantly affects wave behavior as waves approach the shore:</p>
-    <ul>
-        <li><strong>Deep Water Waves:</strong> In deeper water, waves maintain their energy and travel faster. The motion of water particles in these waves is circular.</li>
-        <li><strong>Shallow Water Waves:</strong> As waves enter shallower waters, their speed decreases due to friction with the ocean floor. This causes the wave height to increase, and the circular motion of water particles becomes more elliptical, leading to wave breaking.</li>
-    </ul>
-
-    <h2>Geological Features</h2>
-    <p>Geological features on the seafloor and coastline influence wave formation and behavior:</p>
-    <ul>
-        <li><strong>Seafloor Topography:</strong> Underwater features such as reefs, sandbars, and continental shelves can cause waves to break or change direction.</li>
-        <li><strong>Coastal Shape:</strong> Bays, headlands, and cliffs affect how waves interact with the shoreline. For example:
-            <ul>
-                <li><strong>Headlands:</strong> Concentrate wave energy, leading to stronger and larger waves.</li>
-                <li><strong>Bays:</strong> Disperse wave energy, resulting in calmer waters.</li>
+            <h2>Guide to Moon Phases and Tides</h2>
+            <ul style="list-style: none;">
+                <li><strong>New Moon:</strong> Spring tides (high highs and low lows).</li>
+                <li><strong>Full Moon:</strong> Similar to New Moon.</li>
+                <li><strong>First Quarter:</strong> Neap tides (moderate highs and lows).</li>
+                <li><strong>Last Quarter:</strong> Similar to First Quarter.</li>
             </ul>
-        </li>
-        <li><strong>Tectonic Activity:</strong> Geological events like earthquakes can generate large waves, known as tsunamis, which are unrelated to wind.</li>
-    </ul>
-</div>
+            <p><em>Tip:</em> Spring tides are ideal for strong waves, while neap tides offer stability.</p>
+        </div>
 
+        <h1>Influences on Wave Formation</h1>
+
+        <div class="weather-section">
+            <h2>Wind</h2>
+            <p>Wind generates waves by transferring energy to the ocean surface:</p>
+            <ul style="list-style: none;">
+                <li><strong>Wind Speed:</strong> Faster winds create larger waves.</li>
+                <li><strong>Duration:</strong> Longer wind duration leads to bigger waves.</li>
+                <li><strong>Fetch:</strong> Distance over which wind blows, allowing waves to grow.</li>
+            </ul>
+
+            <h2>Ocean Depth</h2>
+            <p>Depth affects wave behavior near the shore:</p>
+            <ul style="list-style: none;">
+                <li><strong>Deep Water Waves:</strong> Maintain energy and speed.</li>
+                <li><strong>Shallow Water Waves:</strong> Slow down and break near the shore.</li>
+            </ul>
+
+            <h2>Geological Features</h2>
+            <ul style="list-style: none;">
+                <li><strong>Seafloor Topography:</strong> Reefs and sandbars influence wave breaking.</li>
+                <li><strong>Coastal Shape:</strong> Headlands and bays affect wave strength.</li>
+            </ul>
+        </div>
+    </div>
+</body>
 {% endblock %}

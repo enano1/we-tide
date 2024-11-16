@@ -2,13 +2,17 @@
 {% extends 'tide/base.html' %}
 
 {% block content %}
-<div class="create-status-form">
-    <h2>Post a New Status</h2>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Post Status</button>
-    </form>
-    <a href="{% url 'show_profile' profile.pk %}" class="cancel-button">Cancel</a>
+<body class="forms-body">
+<div class="content-wrapper">
+    <div class="forms">
+        <h2>Post a New Status</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Post Status</button>
+        </form>
+        <a href="{% url 'show_profile' profile.pk %}" class="cancel-button">Cancel</a>
+    </div>
 </div>
+</body>
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends 'tide/base.html' %}
 {% block content %}
+<body class="location-body">
+    <div class="location-content-wrapper">
 <h2>Update Surf Session</h2>
 <form method="post">
     {% csrf_token %}
@@ -7,4 +9,6 @@
     <button type="submit">Save Changes</button>
 </form>
 <a href="{% url 'surf_sessions' %}">Cancel</a>
+</div>
+</body>
 {% endblock %}

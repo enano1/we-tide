@@ -2,16 +2,21 @@
 <!--
     This template is used to display comments and its replies.
 -->
-<div class="comment" style="margin-left: {{ level|add:"20" }}px;">
-    <p><strong><a href="{% url 'show_profile' comment.profile.pk %}">{{ comment.profile.user.username }}</a>:</strong> {{ comment.comment_text }}</p>
-    <a href="{% url 'reply_to_comment' parent_comment_id=comment.id %}">Reply</a>
-    {% if request.user == comment.profile.user %}
-        <a href="{% url 'delete_comment' comment.id %}">Delete</a>
-    {% endif %}
-
-    <div class="replies">
-        {% for reply in comment.replies.all %}
-            {% include 'tide/comment.html' with comment=reply level=level|add:"20" %}
-        {% endfor %}
+<div class="comment" style="margin-top: 15px; margin-bottom: 15px; padding: 10px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="margin: 0; font-size: 14px; color: #333; flex-grow: 1;">
+            <strong>
+                <a href="{% url 'show_profile' comment.profile.pk %}" style="color: #007BFF; text-decoration: none;">
+                    {{ comment.profile.user.username }}
+                </a>:
+            </strong> 
+            {{ comment.comment_text }}
+        </p>
+        <div style="display: flex; gap: 10px; margin-left: 10px;">
+            {% if request.user == comment.profile.user %}
+                <a href="{% url 'delete_comment' comment.id %}" style=" color: #FF0000; text-decoration: none;">Delete</a>
+            {% endif %}
+        </div>
     </div>
 </div>
+

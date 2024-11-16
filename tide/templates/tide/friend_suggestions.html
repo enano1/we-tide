@@ -1,31 +1,35 @@
-<!-- templates/mini_fb/friend_suggestions.html -->
 {% extends 'tide/base.html' %}
 
 {% block content %}
-    <h3>Friend Suggestions for {{ profile.fname }} {{ profile.lname }}</h3>
+<body class="forms-body">
+<div class="content-wrapper">
+    <div class="forms">
+        <h2>Friend Suggestions for {{ profile.fname }} {{ profile.lname }}</h2>
 
-    <div class="profile-grid">
-        {% for suggestion in friend_suggestions %}
-            <div class="profile-card">
-                <a href="{% url 'show_profile' suggestion.pk %}">
-                    {% if suggestion.image %}
-                        <img src="{{ suggestion.image.url }}" class="profile-image" alt="{{ suggestion.fname }} {{ suggestion.lname }}">
-                    {% else %}
-                        <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
-                    {% endif %}
-                </a>
-                <div class="profile-info">
-                    <div class="profile-name">{{ suggestion.fname }} {{ suggestion.lname }}</div>
-                    <div class="profile-city">{{ suggestion.city }}</div>
+        <div class="profile-grid">
+            {% for suggestion in friend_suggestions %}
+                <div class="profile-card">
+                    <a href="{% url 'show_profile' suggestion.pk %}">
+                        {% if suggestion.image %}
+                            <img src="{{ suggestion.image.url }}" class="profile-image" alt="{{ suggestion.fname }} {{ suggestion.lname }}">
+                        {% else %}
+                            <img src="https://picsum.photos/200/300" class="profile-image" alt="Default Profile Image">
+                        {% endif %}
+                    </a>
+                    <div class="profile-info">
+                        <div class="profile-name">{{ suggestion.fname }} {{ suggestion.lname }}</div>
+                        <div class="profile-city">{{ suggestion.city }}</div>
+                    </div>
+                    <form action="{% url 'add_friend' profile.pk suggestion.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="profile-button">Add Friend</button>
+                    </form>
                 </div>
-                <form action="{% url 'add_friend' profile.pk suggestion.pk %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="profile-button">Add Friend</button>
-                </form>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'show_profile' profile.pk %}" class="cancel-button">Back to Profile</a>
     </div>
-
-    <a href="{% url 'show_profile' profile.pk %}" class="profile-button">Back to Profile</a>
+</div>
+</body>
 {% endblock %}
-
