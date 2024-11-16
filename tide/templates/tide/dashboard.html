@@ -31,12 +31,12 @@
                         <strong>{{ session.surf_spot.nickname }}</strong> 
                         on {{ session.date }} - 
                         Rating: {{ session.wave_rating }}
-                        <a style="float: right;" href="{% url 'view_surf_session' session.pk %}" class="link"">View Details</a>
+                        <a style="float: right;" href="{% url 'view_surf_session' session.pk %}" class="link">View Details</a>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No recent surf sessions. <a href="{% url 'create_surf_session' %}" class="link">Log a new session</a>.</p>
+            <p style="color: white">No recent surf sessions. <a href="{% url 'create_surf_session' %}" class="link">Log a new session</a>.</p>
         {% endif %}
     </div>
 </div>
