@@ -14,19 +14,20 @@
     </form> {% endcomment %}
     <!-- Next Steps Section -->
     <div class="dashboard-section next-steps recent-activity">
-        <h2>Next Steps</h2>
-        <p>
-            <a href="{% url 'all_friends' %}" class="link">View Friends</a><br>
-            <a href="{% url 'show_profile' request.user.profile.pk %}" class="link">View My Profile</a><br>
-            <a href="{% url 'location_input' %}" class="link">Find Nearest NOAA Station</a><br>
-            <a href="{% url 'saved_locations' %}" class="link">View Saved Surf Spots</a><br>
-            <a href="{% url 'surf_sessions_public' %}" class="link">View Public Surf Sessions</a>
-        </p>
-        <h2>Recent Activity</h2>
+        <div style="text-align: center;">
+            <p>
+                <a href="{% url 'all_friends' %}" class="link">View Friends</a><br>
+                <a href="{% url 'location_input' %}" class="link">Find Nearest NOAA Station</a><br>
+                <a href="{% url 'saved_locations' %}" class="link">View Saved Surf Spots</a><br>
+                <a href="{% url 'surf_sessions_public' %}" class="link">View Public Surf Sessions</a>
+            </p>
+            <h2>Recent Activity</h2>
+        </div>
         {% if recent_surf_sessions %}
             <ul>
-                <a href="{% url 'surf_sessions' %}" class="link">View All Surf Sessions</a>
-                {% for session in recent_surf_sessions %}
+                <div style="text-align: center;">
+                    <a href="{% url 'surf_sessions' %}" class="link">View All Surf Sessions</a>
+                    {% for session in recent_surf_sessions %}
                     <li>
                         <strong>{{ session.surf_spot.nickname }}</strong> 
                         on {{ session.date }} - 
@@ -35,9 +36,12 @@
                     </li>
                 {% endfor %}
             </ul>
+            
         {% else %}
             <p style="color: white">No recent surf sessions. <a href="{% url 'create_surf_session' %}" class="link">Log a new session</a>.</p>
         {% endif %}
+    </div>
+
     </div>
 </div>
 </body>
