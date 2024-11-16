@@ -49,9 +49,12 @@
                         <p>{{ profile.fname }} has no friends yet.</p>
                     {% endfor %}
                 </div>
-                <div style="display: flex; justify-content: center;">
-                    <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
-                </div>
+                
+                {% if request.user == profile.user %}
+                    <div style="display: flex; justify-content: center;">
+                        <a href="{% url 'friend_suggestions' profile.pk %}" class="profile-button">Find Friends</a>
+                    </div>
+                {% endif %}
             </div>
 
             <hr>
