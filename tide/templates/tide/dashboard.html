@@ -15,18 +15,21 @@
     <!-- Next Steps Section -->
     <div class="dashboard-section next-steps recent-activity">
         <div style="text-align: center;">
+            <h2>Dashboard</h2>
+
             <p>
                 <a href="{% url 'all_friends' %}" class="link">View Friends</a><br>
                 <a href="{% url 'location_input' %}" class="link">Find Nearest NOAA Station</a><br>
                 <a href="{% url 'saved_locations' %}" class="link">View Saved Surf Spots</a><br>
-                <a href="{% url 'surf_sessions_public' %}" class="link">View Public Surf Sessions</a>
             </p>
             <h2>Recent Activity</h2>
         </div>
         {% if recent_surf_sessions %}
             <ul>
                 <div style="text-align: center;">
-                    <a href="{% url 'surf_sessions' %}" class="link">View All Surf Sessions</a>
+                    <a style="margin-bottom: 20px;" href="{% url 'surf_sessions' %}" class="link">View All Your Surf Sessions</a><br>
+                    <a style="margin-bottom: 20px;" href="{% url 'surf_sessions_public' %}" class="link">View Public Surf Sessions</a>
+
                     {% for session in recent_surf_sessions %}
                     <li>
                         <strong>{{ session.surf_spot.nickname }}</strong> 
