@@ -498,8 +498,9 @@ button[type="submit"]:hover {
     width: 300px;
     height: 300px;
     /* border-radius: 50%; */
-    object-fit: cover;
+    object-fit: cover; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom:10px;
 }
 
 .profile-details {
@@ -585,7 +586,7 @@ button[type="submit"]:hover {
 }
 
 .profile-body {
-    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background: url('https://cs-people.bu.edu/enano1/background_image5.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     text-decoration: none;
@@ -605,7 +606,7 @@ button[type="submit"]:hover {
 }
 
 .all-friends-body {
-    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background: url('https://cs-people.bu.edu/enano1/background_image5.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: white;
@@ -774,6 +775,7 @@ h3 {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     display: block;
     margin: 0 auto;
+    margin-top:10px;
 
 }
 
@@ -801,7 +803,7 @@ ul {
 
 /* General Styling for All Forms */
 .forms-body {
-    background: url('/static/tide/background_image5.jpg') no-repeat center center fixed;
+    background: url('https://cs-people.bu.edu/enano1/background_image5.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
 
@@ -841,7 +843,7 @@ ul {
     background-color: #126491;
     color: white;
     border: none;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     font-size: 16px;
     cursor: pointer;
 }
@@ -871,7 +873,7 @@ ul {
 
 /* Location Input Page Styling */
 .location-body {
-    background: url('/static/tide/background_image6.jpg') no-repeat center center fixed;
+    background: url('https://cs-people.bu.edu/enano1/background_image6.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     margin: 0;
