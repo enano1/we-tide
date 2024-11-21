@@ -594,8 +594,11 @@ button[type="submit"]:hover {
     text-align: center;
     font-weight: bold;
     text-decoration: none;
-    /* border-radius: 5px; */
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.edit-profile-button:hover {
+    background-color: #4867f2;
 }
 
 .profile-body {
