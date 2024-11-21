@@ -65,10 +65,12 @@ class CreateStatusMessageForm(forms.ModelForm):
         model = StatusMessage
         fields = ['message', 'surf_session', 'image_file']
 
-
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)  
         super().__init__(*args, **kwargs)
+        if self.user:
+            self.fields['surf_session'].queryset = SurfSession.objects.filter(user=self.user)
+
 
 
 class LocationForm(forms.Form):
