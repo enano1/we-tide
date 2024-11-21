@@ -471,7 +471,7 @@ button[type="submit"] {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
+ 
 button[type="submit"]:hover {
     background-color: #2fd38c;
 }
@@ -539,8 +539,25 @@ button[type="submit"]:hover {
     margin-right: 10px;
     text-align: center;
     text-decoration: none;
+    flex: 0 0 auto;
+    min-width: 140px;
+    width: fit-content;
+    max-width: 300px;
+    overflow: hidden;
 }
 
+.friend-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease-in-out;
+
+}
+
+.friend-name {
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-decoration: none;
+    word-break: break-word;
+}
 
 .friend-image {
     width: 60px;
@@ -549,11 +566,7 @@ button[type="submit"]:hover {
     object-fit: cover;
 }
 
-.friend-name {
-    font-size: 0.9em;
-    margin-top: 5px;
-    text-decoration: none;
-}
+
 
 .profile-button {
     display: inline-block;
