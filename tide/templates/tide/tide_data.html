@@ -7,7 +7,7 @@
 
         <h1>Tide Data for Station {{ station_id }}</h1>
         <h2>Key Insights</h2>
-        <ul>
+        <ul style="list-style-type: none;">
             {% if max_tide and min_tide %}
                 <li><strong>Highest Tide:</strong> {{ max_tide.t }} at {{ max_tide.v }} meters</li>
                 <li><strong>Lowest Tide:</strong> {{ min_tide.t }} at {{ min_tide.v }} meters</li>
@@ -50,15 +50,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('tideChart').getContext('2d');
-    const isPredicted = {{ is_predicted|yesno:"true,false" }};
     const chartData = {
         labels: {{ chart_labels|safe }},
         datasets: [{
-            label: isPredicted ? 'Predicted Water Level (m)' : 'Actual Water Level (m)',
+            label: 'Water Level (m)',
             data: {{ chart_values|safe }},
-            borderColor: isPredicted ? 'red' : 'blue',
-            backgroundColor: isPredicted ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)',
-            borderDash: isPredicted ? [5, 5] : [],
+            borderColor: 'blue',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderWidth: 2,
             pointRadius: 2,
             fill: true,

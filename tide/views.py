@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse, reverse_lazy
@@ -232,8 +231,6 @@ def tide_data_view(request, station_id):
                 for record in tide_data
             ]
 
-            label = "Predicted" if days_ahead > 0 else "Actual"
-            is_predicted = days_ahead > 0
 
             max_tide = max(adjusted_data, key=lambda x: float(x['v']))
             min_tide = min(adjusted_data, key=lambda x: float(x['v']))
@@ -247,7 +244,6 @@ def tide_data_view(request, station_id):
             optimal_times = []
             chart_labels = chart_values = []
             label = "No Data"
-            is_predicted = False
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
@@ -256,7 +252,6 @@ def tide_data_view(request, station_id):
         optimal_times = []
         chart_labels = chart_values = []
         label = "Error"
-        is_predicted = False
 
     return render(request, 'tide/tide_data.html', {
         'data': adjusted_data,
@@ -266,8 +261,6 @@ def tide_data_view(request, station_id):
         'optimal_times': optimal_times,
         'chart_labels': chart_labels,
         'chart_values': chart_values,
-        'label': label,
-        'is_predicted': is_predicted,
         'selected_date': input_date,  
     })
 

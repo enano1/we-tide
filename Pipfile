@@ -23,8 +23,9 @@ sqlparse = "==0.5.1"
 typing-extensions = "==4.12.2"
 urllib3 = "==2.2.3"
 whitenoise = "==6.7.0"
-geopy = "*"
+geopy = "==2.4.1"
 python-decouple = "*"
+geographiclib = "==2.0"
 
 [dev-packages]
 
