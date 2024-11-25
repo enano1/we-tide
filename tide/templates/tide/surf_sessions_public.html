@@ -15,11 +15,12 @@
             <select name="surf_spot">
                 <option value="">All Spots</option>
                 {% for spot in surf_spots %}
-                <option value="{{ spot.id }}" {% if request.GET.surf_spot == spot.id|stringformat:"s" %}selected{% endif %}>
-                    {{ spot }}
+                <option value="{{ spot.nickname }}" {% if request.GET.surf_spot == spot.nickname %}selected{% endif %}>
+                    {{ spot.nickname }}
                 </option>
                 {% endfor %}
             </select>
+                        
 
             <label for="wave_rating">Wave Rating:</label>
             <select name="wave_rating">

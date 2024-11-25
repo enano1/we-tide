@@ -20,6 +20,9 @@ from plotly.io import to_html
 
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
+    '''
+    Shows all profiles. If user is authenticated and has profile, a message indicating that they already have a profile is shown.
+    '''
     model = Profile
     template_name = 'tide/show_all_profiles.html'
     context_object_name = 'profiles'
@@ -31,6 +34,9 @@ class ShowAllProfilesView(LoginRequiredMixin, ListView):
         return context
     
 class CustomLoginView(LoginView):
+    '''
+    Custom login view that redirects to dashboard if user is already authenticated.
+    '''
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('dashboard')  
@@ -38,12 +44,16 @@ class CustomLoginView(LoginView):
 
 
 class AllFriendsView(LoginRequiredMixin, View):
+    '''
+    View to show all friends of a user.
+    '''
     def get(self, request):
         profile = request.user.profile  
         friends = profile.get_friends()  
         return render(request, 'tide/all_friends.html', {'profile': profile, 'friends': friends})
     
 class ShowProfilePageView(LoginRequiredMixin, DetailView):
+    """View to display a user's profile page."""
     model = Profile
     template_name = 'tide/show_profile.html'  
     context_object_name = 'profile'
@@ -51,6 +61,8 @@ class ShowProfilePageView(LoginRequiredMixin, DetailView):
 
 
 class CreateProfileView(CreateView):
+    """View to create a user's profile page."""
+    
     model = Profile
     form_class = CreateProfileForm
     template_name = 'tide/create_profile.html'
@@ -66,6 +78,7 @@ class CreateProfileView(CreateView):
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    """View to update a user's profile."""
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'tide/update_profile_form.html'
@@ -77,6 +90,8 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         return reverse('show_profile', kwargs={'pk': self.object.pk})
 
 class CreateFriendView(LoginRequiredMixin, View):
+    """View to create a friend relationship between two profiles."""
+    
     def post(self, request, pk, other_pk):
         profile = get_object_or_404(Profile, pk=pk)
         other_profile = get_object_or_404(Profile, pk=other_pk)
@@ -87,6 +102,7 @@ class CreateFriendView(LoginRequiredMixin, View):
         return redirect('show_profile', pk=profile.pk)
 
 class ShowFriendSuggestionsView(LoginRequiredMixin, DetailView):
+    """View to show a list of profiles that are suggested as friends for the current profile."""
     model = Profile
     template_name = 'tide/friend_suggestions.html'
     context_object_name = 'profile'
@@ -97,6 +113,7 @@ class ShowFriendSuggestionsView(LoginRequiredMixin, DetailView):
         return context
 
 class RemoveFriendView(LoginRequiredMixin, View):
+    """Handles the removal of a friend relationship between two profiles."""
     def post(self, request, pk, other_pk):
         profile = get_object_or_404(Profile, pk=pk)
         other_profile = get_object_or_404(Profile, pk=other_pk)
@@ -107,6 +124,7 @@ class RemoveFriendView(LoginRequiredMixin, View):
 
 
 class CreateStatusMessageView(LoginRequiredMixin, CreateView):
+    """View to create a status message for a given profile."""
     form_class = CreateStatusMessageForm
     template_name = 'tide/create_status_form.html'
 
@@ -142,6 +160,8 @@ class CreateStatusMessageView(LoginRequiredMixin, CreateView):
         return reverse('show_profile', args=[self.kwargs['pk']])
     
 class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
+    """View to delete a status message."""
+    
     model = StatusMessage
     template_name = 'tide/delete_status_form.html'
     context_object_name = 'status_message'
@@ -154,6 +174,7 @@ class DeleteStatusMessageView(LoginRequiredMixin, DeleteView):
         return reverse('show_profile', args=[profile_pk])
 
 class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
+    """View to update a status message."""
     model = StatusMessage
     fields = ['message']  
     template_name = 'tide/update_status_form.html'
@@ -167,6 +188,7 @@ class UpdateStatusMessageView(LoginRequiredMixin, UpdateView):
         return reverse('show_profile', args=[profile_pk])
 
 class ShowNewsFeedView(LoginRequiredMixin, DetailView):
+    """View to display the news feed of a user."""
     model = Profile
     template_name = 'tide/news_feed.html'
     context_object_name = 'profile'
@@ -183,6 +205,7 @@ class ShowNewsFeedView(LoginRequiredMixin, DetailView):
 ### DASHBOARD VIEW ###
 
 class DashboardView(LoginRequiredMixin, TemplateView):
+    """Displays the dashboard with user's recent surf sessions and surf spots."""
     template_name = 'tide/dashboard.html'
     welcome_message = 'Welcome to your Dashboard!'
 
@@ -196,6 +219,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 
 def tide_data_view(request, station_id):
+    """View to display tide data for a given NOAA station id and date."""
     input_date = request.GET.get('date', datetime.today().strftime('%Y-%m-%d'))
     input_date_obj = datetime.strptime(input_date, '%Y-%m-%d')
 
@@ -239,7 +263,6 @@ def tide_data_view(request, station_id):
             max_tide = max(adjusted_data, key=lambda x: float(x['v']))
             min_tide = min(adjusted_data, key=lambda x: float(x['v']))
             
-            # Filter and paginate optimal times
             filtered_optimal_times = [
                 record for record in adjusted_data if 0.6 <= float(record['v']) <= 1.4
             ]
@@ -298,6 +321,7 @@ def tide_data_view(request, station_id):
 
 
 def haversine(lat1, lon1, lat2, lon2):
+    """Calculate the great-circle distance between two points on the Earth."""
     R = 6371  # earth's radius in km!
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)
@@ -306,6 +330,7 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * c
 
 def location_input_view(request):
+    """View to handle user input of a location to find the nearest NOAA tide station."""
     if request.method == 'POST':
         address = request.POST.get('address')
 
@@ -346,6 +371,7 @@ def nearest_station_view(request, latitude, longitude):
 
 
 def get_moon_phase(date):
+    """Calculate the moon phase for a given date."""
     if is_naive(date):  
         date = make_aware(date)
 
@@ -374,6 +400,7 @@ def get_moon_phase(date):
     return {'phase_name': phase_name, 'phase_description': phase_description}
 
 def weather_view(request, lat, lon):
+    """Get current weather data for the given latitude and longitude."""
     api_key = config('OPENWEATHER_API_KEY')
     weather_url = "https://api.openweathermap.org/data/2.5/weather"
     params = {
@@ -404,13 +431,15 @@ def weather_view(request, lat, lon):
 
 
 def tide_info_view(request):
+    """Render the tide information page."""
     return render(request, 'tide/tide_info.html')
 
 
 class SaveStationView(LoginRequiredMixin, View):
+    """Saves a NOAA tide station as a user's favorite surf spot."""
     def post(self, request):
         station_id = request.POST.get("station_id")
-        name = request.POST.get("name")
+        name = request.POST.get("nickname")
         latitude = request.POST.get("latitude")
         longitude = request.POST.get("longitude")
         nickname = request.POST.get("nickname", "")
@@ -431,11 +460,13 @@ class SaveStationView(LoginRequiredMixin, View):
         return redirect('dashboard')
 
 class SavedLocationsView(LoginRequiredMixin, View):
+    """Display a list of a user's saved surf spots."""
     def get(self, request):
         surf_spots = SurfSpot.objects.filter(user=request.user)
         return render(request, 'tide/saved_locations.html', {'surf_spots': surf_spots})
 
 class CreateSurfSessionView(CreateView):
+    """Create a new surf session for the logged-in user."""
     model = SurfSession
     form_class = SurfSessionForm
     template_name = 'tide/create_surf_session.html'
@@ -450,6 +481,7 @@ class CreateSurfSessionView(CreateView):
         return super().form_valid(form)
 
 class SurfSessionListView(LoginRequiredMixin, ListView):
+    """List a user's surf sessions."""
     model = SurfSession
     template_name = 'tide/surf_sessions.html'
     context_object_name = 'surf_sessions'
@@ -460,12 +492,15 @@ class SurfSessionListView(LoginRequiredMixin, ListView):
 
 
 class ViewSurfSessionView(LoginRequiredMixin, DetailView):
+    """View an existing surf session for the logged-in user."""
     model = SurfSession
     template_name = 'tide/view_surf_session.html'
     context_object_name = 'surf_session'
 
 
 class UpdateSurfSessionView(LoginRequiredMixin, UpdateView):
+    """Update an existing surf session for the logged-in user."""
+    
     model = SurfSession
     form_class = SurfSessionForm
     template_name = 'tide/update_surf_session_form.html'
@@ -477,6 +512,7 @@ class UpdateSurfSessionView(LoginRequiredMixin, UpdateView):
         return reverse('surf_sessions')
 
 class DeleteSurfSessionView(LoginRequiredMixin, DeleteView):
+    """Delete an existing surf session for the logged-in user."""
     model = SurfSession
     template_name = 'tide/delete_surf_session_form.html'
     context_object_name = 'surf_session'
@@ -488,6 +524,8 @@ class DeleteSurfSessionView(LoginRequiredMixin, DeleteView):
         return reverse('surf_sessions')
     
 class CreateCommentView(CreateView):
+    """Create a comment on a status message for the logged-in user."""
+
     model = Comment
     form_class = CommentForm
     template_name = 'tide/create_comment.html'
@@ -512,6 +550,8 @@ class CreateCommentView(CreateView):
 
 
 class DeleteCommentView(DeleteView):
+    """Delete a comment made by a user on a status message or reply."""
+
     model = Comment
     template_name = 'tide/confirm_delete.html'  
 
@@ -539,7 +579,7 @@ class SurfSessionPublicListView(ListView):
         if date_to:
             queryset = queryset.filter(date__lte=date_to)
         if surf_spot:
-            queryset = queryset.filter(surf_spot__id=surf_spot)
+            queryset = queryset.filter(surf_spot__nickname=surf_spot)
         if wave_rating:
             queryset = queryset.filter(wave_rating=wave_rating)
 
@@ -547,7 +587,11 @@ class SurfSessionPublicListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['surf_spots'] = SurfSpot.objects.all()
+        context['surf_spots'] = (
+            SurfSpot.objects.values('nickname')
+            .distinct()
+            .order_by('nickname')
+        )
         return context
 
 def HomeView(request):

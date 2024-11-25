@@ -4,6 +4,9 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 class FloatConverter:
+    """Converter to convert a string to a float in a URL pattern.
+    Need this to convert the latitude and longitude values in the URL to floats.
+    """
     regex = r'-?\d+\.\d+'
 
     def to_python(self, value):

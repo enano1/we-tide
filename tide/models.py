@@ -90,6 +90,7 @@ class Friend(models.Model):
 
 
 class SurfSpot(models.Model):
+    """Model representing a surf spot with associated user and location details."""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_spots')
     station_id = models.CharField(max_length=10)
     nickname = models.CharField(max_length=100, blank=True)
@@ -103,6 +104,8 @@ class SurfSpot(models.Model):
     class Meta:
         ordering = ['-created_at']
 class SurfSession(models.Model):
+    """Model to represent a surf session for a user."""
+    
     surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE, related_name='surf_sessions')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='surf_sessions')
     date = models.DateField()
@@ -122,6 +125,7 @@ class SurfSession(models.Model):
 ##############################################################################################
 
 class StatusMessage(models.Model):
+    """Model to store status messages, which are text updates from users."""
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='status_messages')

@@ -27,8 +27,10 @@
                         <td>{{ session.wave_rating }}/5</td>
                         <td>{{ session.notes|default:"No notes" }}</td>
                         <td>
-                            <a href="{% url 'update_surf_session' session.pk %}" style="color: #007BFF">Edit</a>
-                            <a href="{% url 'delete_surf_session' session.pk %}" style="color: red">Delete</a>
+                            <div style="display: flex; flex-direction: column">
+                                <a href="{% url 'update_surf_session' session.pk %}" style="color: #007BFF">Edit</a>
+                                <a href="{% url 'delete_surf_session' session.pk %}" style="color: red">Delete</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
