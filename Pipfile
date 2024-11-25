@@ -26,6 +26,7 @@ whitenoise = "==6.7.0"
 geopy = "==2.4.1"
 python-decouple = "*"
 geographiclib = "==2.0"
+plotly = "*"
 
 [dev-packages]
 

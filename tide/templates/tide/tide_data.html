@@ -31,110 +31,36 @@
         <h3>Recommended Surfing Times:</h3>
         {% if optimal_times %}
             <ul id="surfing-times" style="list-style-type: none;">
-                <li>Loading...</li>
+                {% for time in optimal_times %}
+                    <li>{{ time.t }} - {{ time.v }} meters</li>
+                {% endfor %}
             </ul>
+        
+            <div class="pagination">
+                <span class="step-links">
+                    {% if optimal_times.has_previous %}
+                        <a class="profile-button" href="?page={{ optimal_times.previous_page_number }}&date={{ selected_date }}">Previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ optimal_times.number }} of {{ optimal_times.paginator.num_pages }}
+                    </span>
+        
+                    {% if optimal_times.has_next %}
+                        <a class="profile-button" href="?page={{ optimal_times.next_page_number }}&date={{ selected_date }}">Next</a>
+                    {% endif %}
+                </span>
+            </div>
         {% else %}
             <p>No recommended surfing times available.</p>
         {% endif %}
-
-        <div id="pagination-controls">
-            <button id="prev-page" disabled>Previous</button>
-            <span id="page-info">Page 1 of 1</span>
-            <button id="next-page" disabled>Next</button>
-        </div>
-
+        
         <p><em>Tip: Tide shifts approximately 50 minutes later each day...</em></p>
 
-<canvas id="tideChart"></canvas>
+        <h2>Plot of Tide Heights</h2>
+        <div id="tide-graph">
+            {{ graph_html|safe }}
+        </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('tideChart').getContext('2d');
-    const chartData = {
-        labels: {{ chart_labels|safe }},
-        datasets: [{
-            label: 'Water Level (m)',
-            data: {{ chart_values|safe }},
-            borderColor: 'blue',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderWidth: 2,
-            pointRadius: 2,
-            fill: true,
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: chartData,
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Tide Levels for Station {{ station_id }}'
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `Time: ${tooltipItem.label}, Level: ${tooltipItem.raw} m`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: { title: { display: true, text: 'Time' } },
-                y: { title: { display: true, text: 'Water Level (m)' }, suggestedMin: 0, suggestedMax: 2 }
-            }
-        }
-    };
-
-    if (chartData.labels.length > 0) {
-        new Chart(ctx, config);
-    } else {
-        ctx.font = "20px Arial";
-        ctx.fillText("No data to display", 50, 50);
-    }
-
-    const optimalTimes = {{ optimal_times|safe }};
-    const itemsPerPage = 10;
-    let currentPage = 1;
-
-    function updatePagination() {
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const pageItems = optimalTimes.slice(start, end);
-
-        const list = document.getElementById('surfing-times');
-        list.innerHTML = ''; 
-
-        pageItems.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = `${item.t} - ${item.v} meters`;
-            list.appendChild(li);
-        });
-
-        const totalPages = Math.ceil(optimalTimes.length / itemsPerPage);
-        document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
-
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = currentPage >= totalPages;
-    }
-
-    document.getElementById('prev-page').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePagination();
-        }
-    });
-
-    document.getElementById('next-page').addEventListener('click', () => {
-        if (currentPage * itemsPerPage < optimalTimes.length) {
-            currentPage++;
-            updatePagination();
-        }
-    });
-
-    updatePagination();
-</script>
-
-{% endblock %}
+    </div>
+    {% endblock %}

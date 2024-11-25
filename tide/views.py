@@ -11,6 +11,12 @@ from datetime import datetime, timedelta
 from math import radians, sin, cos, sqrt, atan2
 from django.utils.timezone import make_aware, now, is_naive
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
+import plotly.graph_objects as go
+from plotly.io import to_html
+
+
+
 
 
 class ShowAllProfilesView(LoginRequiredMixin, ListView):
@@ -189,7 +195,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-
 def tide_data_view(request, station_id):
     input_date = request.GET.get('date', datetime.today().strftime('%Y-%m-%d'))
     input_date_obj = datetime.strptime(input_date, '%Y-%m-%d')
@@ -231,17 +236,23 @@ def tide_data_view(request, station_id):
                 for record in tide_data
             ]
 
-
             max_tide = max(adjusted_data, key=lambda x: float(x['v']))
             min_tide = min(adjusted_data, key=lambda x: float(x['v']))
-            optimal_times = [record for record in adjusted_data if 0.5 <= float(record['v']) <= 1.5]
+            
+            # Filter and paginate optimal times
+            filtered_optimal_times = [
+                record for record in adjusted_data if 0.6 <= float(record['v']) <= 1.4
+            ]
+            paginator = Paginator(filtered_optimal_times, 10)
+            page_number = request.GET.get('page', 1)
+            paginated_optimal_times = paginator.get_page(page_number)
 
             chart_labels = [record['t'] for record in adjusted_data]
             chart_values = [float(record['v']) for record in adjusted_data]
         else:
             adjusted_data = []
             max_tide = min_tide = None
-            optimal_times = []
+            paginated_optimal_times = []
             chart_labels = chart_values = []
             label = "No Data"
 
@@ -249,20 +260,41 @@ def tide_data_view(request, station_id):
         print(f"Error fetching data: {e}")
         adjusted_data = []
         max_tide = min_tide = None
-        optimal_times = []
+        paginated_optimal_times = []
         chart_labels = chart_values = []
         label = "Error"
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=chart_labels,
+        y=chart_values,
+        mode='lines+markers',
+        name='Tide Heights',
+        line=dict(shape='spline'),
+        marker=dict(size=8)
+    ))
+
+    fig.update_layout(
+        title="Tide Height Data",
+        xaxis_title="Time (GMT)",
+        yaxis_title="Tide Height (meters)",
+        template="plotly_white"
+    )
+
+    graph_html = to_html(fig, full_html=False)
 
     return render(request, 'tide/tide_data.html', {
         'data': adjusted_data,
         'station_id': station_id,
         'max_tide': max_tide,
         'min_tide': min_tide,
-        'optimal_times': optimal_times,
+        'optimal_times': paginated_optimal_times,
         'chart_labels': chart_labels,
         'chart_values': chart_values,
-        'selected_date': input_date,  
+        'selected_date': input_date,
+        'graph_html': graph_html,  
     })
+
 
 
 def haversine(lat1, lon1, lat2, lon2):
