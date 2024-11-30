@@ -20,7 +20,6 @@ register_converter(FloatConverter, 'float')
 urlpatterns = [
     path('', views.HomeView, name='home'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    # path('profiles/', views.ShowAllProfilesView.as_view(), name='show_all_profiles'),  # Existing view
     path('profile/<int:pk>/', views.ShowProfilePageView.as_view(), name='show_profile'),
     path('create_profile/', views.CreateProfileView.as_view(), name='create_profile'),
     path('login/', auth_views.LoginView.as_view(template_name='tide/login.html'), name='login'),

@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from .models import Profile, StatusMessage, Image, SurfSession, Comment, SurfSpot
 
 class CreateProfileForm(forms.ModelForm):
+    """
+    Form for creating a new profile. This form is used on the signup page.
+    
+    The form includes fields for the user's username, password, first name, last name, city, and bio.
+    """
     username = forms.CharField(label="Username", max_length=150, required=True)
     password = forms.CharField(label="Password", widget=forms.PasswordInput, required=True)
     password_confirmation = forms.CharField(label="Confirm Password", widget=forms.PasswordInput, required=True)
@@ -22,6 +27,7 @@ class CreateProfileForm(forms.ModelForm):
         }
         
     def clean(self):
+        # Check if the username is already taken
         cleaned_data = super().clean()
         username = cleaned_data.get("username")
         password = cleaned_data.get("password")
@@ -49,11 +55,24 @@ class CreateProfileForm(forms.ModelForm):
         return profile
     
 class UpdateProfileForm(forms.ModelForm):
+    """
+    Form for updating a user's profile information.
+
+    This form allows users to update their city, email, profile image, and bio.
+    It is associated with the Profile model.
+    """
     class Meta:
         model = Profile
         fields = ['city', 'email', 'image', 'bio']
 
 class CreateStatusMessageForm(forms.ModelForm):
+    """
+    Form for creating a new status message.
+
+    This form allows users to create a new status message which can be
+    associated with a surf session and have an image file. It is
+    associated with the StatusMessage model.
+    """
     surf_session = forms.ModelChoiceField(
         queryset=SurfSession.objects.all(),
         required=False,
@@ -74,9 +93,13 @@ class CreateStatusMessageForm(forms.ModelForm):
 
 
 class LocationForm(forms.Form):
+    """
+    Form for searching for tide data at a specific NOAA station.
+    """
     station_id = forms.CharField(label="Station ID", max_length=10, required=True)
 
 class SurfSessionForm(forms.ModelForm):
+    """Form for creating or updating a surf session."""
     class Meta:
         model = SurfSession
         fields = ['surf_spot', 'date', 'duration', 'wave_rating', 'notes']
@@ -93,6 +116,7 @@ class SurfSessionForm(forms.ModelForm):
             self.fields['surf_spot'].queryset = SurfSpot.objects.filter(user=user)  
 
 class CommentForm(forms.ModelForm):
+    """Form for creating a new comment associated with a status message."""
     class Meta:
         model = Comment
         fields = ['comment_text']

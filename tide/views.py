@@ -264,7 +264,7 @@ def tide_data_view(request, station_id):
             min_tide = min(adjusted_data, key=lambda x: float(x['v']))
             
             filtered_optimal_times = [
-                record for record in adjusted_data if 0.6 <= float(record['v']) <= 1.4
+                record for record in adjusted_data if 0.6 <= float(record['v']) <= 1.4 #predetermined from my research
             ]
             paginator = Paginator(filtered_optimal_times, 10)
             page_number = request.GET.get('page', 1)
@@ -285,7 +285,7 @@ def tide_data_view(request, station_id):
         max_tide = min_tide = None
         paginated_optimal_times = []
         chart_labels = chart_values = []
-        label = "Error"
+        # label = "Error"
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -388,10 +388,10 @@ def get_moon_phase(date):
         phase_description = "Neap tides occur with moderate tidal ranges."
     elif 0.47 < phase_index < 0.53:
         phase_name = "Full Moon"
-        phase_description = "Spring tides occur again, creating stronger tidal effects."
+        phase_description = "Spring tides occur, creating stronger tidal effects."
     elif 0.72 < phase_index < 0.78:
         phase_name = "Last Quarter"
-        phase_description = "Neap tides occur again with more moderate tidal ranges."
+        phase_description = "Neap tides occur, with more moderate tidal ranges."
     else:
         phase_name = "Waxing or Waning Phase"
         phase_description = "Tidal ranges are gradually changing."
@@ -444,7 +444,7 @@ class SaveStationView(LoginRequiredMixin, View):
         longitude = request.POST.get("longitude")
         nickname = request.POST.get("nickname", "")
 
-        # to check if this station is already saved
+        """to check if this station is already saved"""        
         if SurfSpot.objects.filter(user=request.user, station_id=station_id).exists():
             messages.info(request, "Station already saved.")
         else:
@@ -562,6 +562,7 @@ class DeleteCommentView(DeleteView):
             return reverse_lazy('show_profile', kwargs={'pk': self.object.status_message.profile.id if self.object.status_message else self.object.parent_comment.profile.id})
 
 class SurfSessionPublicListView(ListView):
+    """List public surf sessions."""
     model = SurfSession
     template_name = 'tide/surf_sessions_public.html'
     context_object_name = 'surf_sessions'
@@ -601,7 +602,8 @@ def HomeView(request):
 ############################ NOAA STATIONS DATA ############################
 ############################################################################
 
-##parsed this data from noaa xml dataset
+"""parsed this data from noaa xml dataset"""
+
 NOAA_STATIONS = [
     {'id': '1611400', 'name': 'Nawiliwili', 'lat': 21.9544, 'lng': -159.3561},
     {'id': '1612340', 'name': 'Honolulu', 'lat': 21.3033, 'lng': -157.8645},
