@@ -1,4 +1,6 @@
-# urls.py
+# File: urls.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: URL patterns for the We Tide application.
 from django.urls import path, register_converter
 from django.contrib.auth import views as auth_views
 from . import views

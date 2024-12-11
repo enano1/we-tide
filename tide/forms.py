@@ -1,4 +1,7 @@
-# forms.py
+# File: forms.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: This module contains form definitions for creating and managing profiles, status messages, and other related entities.
+
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile, StatusMessage, Image, SurfSession, Comment, SurfSpot

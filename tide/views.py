@@ -1,3 +1,7 @@
+# File: views.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: Views for the We Tide application.
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView

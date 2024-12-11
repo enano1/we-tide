@@ -1,3 +1,6 @@
+# File: manage.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: Runs administrative tasks for the Django application.
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os

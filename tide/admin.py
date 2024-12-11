@@ -1,3 +1,7 @@
+# File: admin.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: This file contains the code for the admin page.
+
 from django.contrib import admin
 from .models import *
 # Register your models here.)

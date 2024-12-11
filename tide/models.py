@@ -1,3 +1,7 @@
+# File: models.py
+# Author: Paul Martin Enano (enano1@bu.edu) November 11th, 2024
+# Description: This file contains the models for the We Tide application.
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
