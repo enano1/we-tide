@@ -1,7 +1,9 @@
 # Surf Insight: Tidal Data and Surfing Experience Enhancements
 
 Surf Insight is a cutting-edge Django-based web application designed to provide surfers with comprehensive tidal and weather data to enhance their surfing experience. Explore real-time insights and make informed decisions about your surf sessions. Learn more about the project on my portfolio page or explore the live application here.
+
 Portfolio Page: https://paulmartin.vercel.app/portfolio/we-tide
+
 Live App: wetide-b1e4fbe326fa.herokuapp.com
 
 ---
